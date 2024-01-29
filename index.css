@@ -1,0 +1,62 @@
+body {
+    background-color: #041219;
+    color: white;
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  header {
+    background-color: #041E2C;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  aside {
+    background-color: #041E2C;
+    color: white;
+    width: 200px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding-top: 60px; /* Hauteur de l'en-tête à exclure de l'aside fixe */
+  }
+  
+  main {
+    margin-left: 200px; /* Largeur de l'aside */
+    padding: 20px;
+  }
+  
+  nav ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  nav ul li {
+    margin-bottom: 10px;
+  }
+  
+  nav a {
+    text-decoration: none;
+    color: #40BAFF;
+  }
+
+  input{
+    color: #40BAFF;
+    background-color: #041E2C;
+    border: none;
+  }
+
+  #bot1{
+    position: absolute; 
+    bottom: 0;
+    margin: 10px;
+  }
+  #bot2{
+    position: absolute;
+    bottom: 0;
+    margin-left: 10px;
+    margin-bottom: 50px;
+  }
+  
