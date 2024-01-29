@@ -1,6 +1,7 @@
 CREATE TABLE Artistes (
     artist_id INTEGER PRIMARY KEY,
     nom TEXT NOT NULL,
+    pseudonyme TEXT,
     bio TEXT,
     image_url TEXT
 );
@@ -23,10 +24,10 @@ CREATE TABLE Utilisateurs (
 );
 
 CREATE TABLE Playlists (
+    
     playlist_id INTEGER PRIMARY KEY,
     user_id INTEGER,
-    titre TEXT,
-    FOREIGN KEY (user_id) REFERENCES Utilisateurs(user_id)
+    FOREIGN KEY (user_id) REFERENCES Utilisateurs(user_id),
 );
 
 CREATE TABLE Playlist_Items (
@@ -42,7 +43,7 @@ CREATE TABLE Notes_Albums (
     note_id INTEGER PRIMARY KEY,
     user_id INTEGER,
     album_id INTEGER,
-    note INTEGER CHECK(note >= 1 AND note <= 5),
+    note INTEGER CHECK(note >= 1 AND note <= 10),
     FOREIGN KEY (user_id) REFERENCES Utilisateurs(user_id),
     FOREIGN KEY (album_id) REFERENCES Albums(album_id)
 );
