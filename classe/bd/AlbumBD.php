@@ -70,6 +70,29 @@ class AlbumBD
 
     public static function getByAnnee($annee): array|Album
     {
+        try {
+            $pdo = new PDO('sqlite:music.sqlite3');
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $result = $pdo->query('SELECT * FROM ALBUM WHERE annee = ' . $annee);
+            $pdo = null;
+            return self::createArtistePhp($result);
+        } catch (PDOException $e) {
+            echo "Error !: " . $e->getMessage() . "<br/>";
+            die();
+        }
+    }
 
+    public static function getByArtiste($artiste): array|Album
+    {
+        try {
+            $pdo = new PDO('sqlite:music.sqlite3');
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $result = $pdo->query('SELECT * FROM ALBUM WHERE artiste = "' . $artiste . '"');
+            $pdo = null;
+            return self::createArtistePhp($result);
+        } catch (PDOException $e) {
+            echo "Error !: " . $e->getMessage() . "<br/>";
+            die();
+        }
     }
 }
