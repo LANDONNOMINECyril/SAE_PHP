@@ -1,3 +1,10 @@
+DROP TABLE IF EXISTS Notes_Albums;
+DROP TABLE IF EXISTS Playlist_Items;
+DROP TABLE IF EXISTS Playlists;
+DROP TABLE IF EXISTS Utilisateurs;
+DROP TABLE IF EXISTS Albums;
+DROP TABLE IF EXISTS Artistes;
+
 CREATE TABLE Artistes (
     artist_id INTEGER PRIMARY KEY,
     nom TEXT NOT NULL,
@@ -24,7 +31,7 @@ CREATE TABLE Utilisateurs (
 );
 
 CREATE TABLE Playlists (
-    
+
     playlist_id INTEGER PRIMARY KEY,
     user_id INTEGER,
     FOREIGN KEY (user_id) REFERENCES Utilisateurs(user_id),
