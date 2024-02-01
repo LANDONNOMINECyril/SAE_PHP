@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS Artistes;
 CREATE TABLE Artistes (
     artist_id INTEGER PRIMARY KEY,
     nom TEXT NOT NULL,
-    pseudonyme TEXT,
+    artist_name TEXT,
     bio TEXT,
     image_url TEXT
 );
