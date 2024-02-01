@@ -11,7 +11,7 @@ function createBD(){
         $file_db->exec("CREATE TABLE IF NOT EXISTS Artistes (
             artist_id INTEGER PRIMARY KEY,
             nom TEXT NOT NULL,
-            artiste_name TEXT NOT NULL,
+            artist_name TEXT NOT NULL,
             bio TEXT,
             image_url TEXT
         )");
@@ -60,39 +60,33 @@ function createBD(){
         )");
 
         print_r("Base de données créée");
-        print_r($file_db);
         
         #les insert de extrait.yaml
         $products = Yaml::parseFile(__DIR__."/extrait.yaml");
-        print_r($products);
 
 
         foreach ($products as $product) {
-            print_r($product);
-            print_r($product['entryId']);
-            $insert = "INSERT INTO Albums (album_id, titre, artiste_id, annee, genre, image_url) VALUES (:a, :b, :c, :d, :e, :f);";
+            $insert = "INSERT INTO Albums (album_id, titre, artist_id, annee, genre, image_url) VALUES (:a, :b, :c, :d, :e, :f);";
             $stmt = $file_db->prepare($insert);
             $stmt->bindParam(':a', $product['entryId']);
             $stmt->bindParam(':b', $product['title']);
             
             # on vérifie si l'artiste existe lorsque l'on ajoute un de ses albums
-            $verif = $file_db->prepare("SELECT artiste_name from Artistes where artiste_name = :an");
+            $verif = $file_db->prepare("SELECT artist_id FROM Artistes WHERE artist_name = :an");          
             $verif->bindParam(':an', $product['parent']);
             $verif->execute();
             $res = $verif->fetch(PDO::FETCH_ASSOC);
             
             #si il existe pas alors on en crée un nouveau
             if($res == null){
-                $nvinsert = "INSERT INTO Artistes (nom, artiste_name, bio, image_url) VALUES (:w, :x, :y, :z)";
+                $nvinsert = "INSERT INTO Artistes (nom, artist_name) VALUES (:w, :x)";
                 $crea = $file_db->prepare($nvinsert);
                 $crea->bindParam(':w', $product['parent']);
                 $crea->bindParam(':x', $product['parent']);
-                $crea->bindParam(':y', "...");
-                $crea->bindParam(':z', "#");
                 $crea->execute();
             }
             #sinon on continue juste
-            $artiste = $file_db->prepare("SELECT artist_id FROM Artistes WHERE artiste_name = :artiste");
+            $artiste = $file_db->prepare("SELECT artist_id FROM Artistes WHERE artist_name = :artiste");
             $artiste->bindParam(':artiste', $product['parent']);
             $artiste->execute();
             $res = $artiste->fetch(PDO::FETCH_ASSOC);
