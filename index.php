@@ -4,14 +4,5 @@
 
     require_once 'Classes/data/bd.php';
     createBD();
+    require_once 'login.php'
 ?>
-<!DOCTYPE html>
-<html lang="fr">
-    <head>
-        <meta charset="utf-8">
-        <title>Application spotify</title>
-    </head>
-    <body>
-        
-    </body>
-</html>
