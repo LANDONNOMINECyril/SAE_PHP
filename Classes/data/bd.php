@@ -14,7 +14,7 @@ function createBD(){
         // Exécuter le contenu du fichier SQL
         $file_db->exec($sqlContent);
 
-        print_r("Base de données créée");
+        #print_r("Base de données créée");
         
         #les insert de extrait.yaml
         $products = Yaml::parseFile(__DIR__."/extrait.yaml");
@@ -54,12 +54,12 @@ function createBD(){
 
         $sqlFile = __DIR__ . "/insert.sql";
         $sqlContent = file_get_contents($sqlFile);
-        print_r($sqlContent);
+        #print_r($sqlContent);
 
         // Exécuter le contenu du fichier SQL
         $file_db->exec($sqlContent);
 
-        print_r("Insert ajoutés");
+        #print_r("Insert ajoutés");
     }
     catch(PDOException $ex) {
         // Gestion des exceptions

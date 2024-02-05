@@ -31,23 +31,35 @@
 
 <main>
   <!-- Contenu principal de votre page -->
-  <h2>Contenu principal</h2>
-  <p>Bienvenue sur votre page. Vous pouvez ajouter votre contenu ici.</p>
+  <h2 class="titre-page">Contenu principal</h2>
+  <p></p>
   <?php 
-    require "Classes/data/bd.php";
+    require_once 'Classes/Autoloader.php';
+    Autoloader::register();
+
+    require_once 'Classes/data/bd.php';
+    createBD();
 
     $db = new SQLite3('bdd.sqlite3');
 
     $query = "SELECT * FROM Albums";
     $result = $db->query($query);
-    print_r("wshh", $result);
-
-    
-    if ($result === false) {
-        die("Erreur lors de l'exécution de la requête SQL : " . $db->lastErrorMsg());
+    print_r($result);
+    while ($row = $result->fetchArray()) {
+      echo "<p>" . $row['titre'] . "</p>";
     }
-
 ?>
+      <div class="liste-artiste">
+        
+            <div class="artiste">
+              <img src="{{ artiste.image }}" alt="artiste1" />
+              <div class="contenu">
+                <a href="/programme/detail-artiste/{{ artiste.id }}"><h3 class="test-arrow"><span>{{ artiste.nomArtiste }}</span></h3></a>
+                <p>{{ artiste.categorie }}</p>
+              </div>
+            </div>
+        {% endfor %}
+      </div>
 </main>
 
 <!-- Inclure Bootstrap JS (jQuery et Popper.js doivent être inclus avant) -->
