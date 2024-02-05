@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,7 +19,7 @@
   <nav>
     <ul>
       <li><a href="index.php">Explorer la liste d'album</a></li>
-      <li><a href="#">Mes favoris</a></li>        
+      <li><a href="#">Mes favoris</a></li>
       <li><a href="#">Mon historique</a></li>
       <li><a href="monCompte.php">Mon Compte</a></li>
       <li id="bot1" ><a href="#">Déconnexion</a></li>
@@ -32,6 +33,21 @@
   <!-- Contenu principal de votre page -->
   <h2>Contenu principal</h2>
   <p>Bienvenue sur votre page. Vous pouvez ajouter votre contenu ici.</p>
+  <?php 
+    require "Classes/data/bd.php";
+
+    $db = new SQLite3('bdd.sqlite3');
+
+    $query = "SELECT * FROM Albums";
+    $result = $db->query($query);
+    print_r("wshh", $result);
+
+    
+    if ($result === false) {
+        die("Erreur lors de l'exécution de la requête SQL : " . $db->lastErrorMsg());
+    }
+
+?>
 </main>
 
 <!-- Inclure Bootstrap JS (jQuery et Popper.js doivent être inclus avant) -->
