@@ -1,12 +1,16 @@
 <?php
 
-namespace classe;
+namespace Classes\models;
+
+require_once "Classes/bd/ArtisteBD.php";
+
+use Classes\bd\ArtisteBD;
 
 class Album
 {
     private int $id;
     private string $titre;
-    private string $artiste;
+    private int $artiste;
     private int $annee;
     private string $genre;
     private string $urlImage;
@@ -33,10 +37,10 @@ class Album
 
     public function getArtiste(): string
     {
-        return $this->artiste;
+        return ArtisteBD::getById($this->artiste)->getNom();
     }
 
-    public function setArtiste(string $artiste): void
+    public function setArtiste(int $artiste): void
     {
         $this->artiste = $artiste;
     }

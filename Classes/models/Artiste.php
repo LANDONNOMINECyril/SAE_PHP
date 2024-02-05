@@ -1,6 +1,6 @@
 <?php
 
-namespace classe;
+namespace Classes\models;
 
 class Artiste
 {
@@ -9,7 +9,7 @@ class Artiste
     private string $surnom;
     private string $bio;
     private string $urlImage;
-    private array $albums;
+    private array|Album $albums;
 
     public function getId(): int
     {
@@ -61,12 +61,12 @@ class Artiste
         $this->urlImage = $urlImage;
     }
 
-    public function getAlbums(): array
+    public function getAlbums(): array|Album
     {
         return $this->albums;
     }
 
-    public function setAlbums(array $albums): void
+    public function setAlbums(array|Album $albums): void
     {
         $this->albums = $albums;
     }

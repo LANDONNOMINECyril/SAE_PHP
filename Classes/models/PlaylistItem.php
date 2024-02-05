@@ -1,6 +1,6 @@
 <?php
 
-namespace classe;
+namespace Classes\models;
 
 class PlaylistItem
 {

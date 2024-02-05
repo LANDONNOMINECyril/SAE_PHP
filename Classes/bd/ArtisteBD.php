@@ -1,8 +1,10 @@
 <?php
 
-namespace classe\bd;
+namespace Classes\bd;
 
-use classe\Artiste;
+require_once "Classes/models/Artiste.php";
+
+use Classes\models\Artiste;
 use PDO;
 use PDOException;
 
@@ -13,11 +15,18 @@ class ArtisteBD
         $artiste = array();
         foreach ($result as $row) {
             $artiste = new Artiste();
-            $artiste->setId(intval($row['id']));
+            $artiste->setId(intval($row['artist_id']));
             $artiste->setNom($row['nom']);
-            $artiste->setSurnom($row['surnom']);
-            $artiste->setBio($row['bio']);
-            $artiste->setUrlImage($row['urlImage']);
+            $artiste->setSurnom($row['artist_name']);
+            if (isset($row['bio'])){
+                $artiste->setBio($row['bio']);
+            }
+            else{
+                $artiste->setBio("Aucune biographie disponible");
+            }
+            if (isset($row['image_url'])) {
+                $artiste->setUrlImage($row['image_url']);
+            }
             $artiste->setAlbums(AlbumBD::getByArtiste($artiste->getId()));
         }
         return $artiste;
@@ -25,9 +34,9 @@ class ArtisteBD
     public static function getAllArtistes(): array
     {
         try {
-            $pdo = new PDO('sqlite:music.sqlite3');
+            $pdo = new PDO('sqlite:bdd.sqlite3');
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $result = $pdo->query('SELECT * FROM ARTISTE');
+            $result = $pdo->query('SELECT * FROM Artistes');
             $pdo = null;
             return self::createArtistePhp($result);
         } catch (PDOException $e) {
@@ -39,9 +48,9 @@ class ArtisteBD
     public static function getById($id): Artiste
     {
         try {
-            $pdo = new PDO('sqlite:music.sqlite3');
+            $pdo = new PDO('sqlite:bdd.sqlite3');
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $result = $pdo->query('SELECT * FROM ARTISTE WHERE id = ' . $id);
+            $result = $pdo->query('SELECT * FROM Artistes WHERE artist_id = ' . $id);
             $pdo = null;
             return self::createArtistePhp($result);
         } catch (PDOException $e) {

@@ -1,8 +1,10 @@
 <?php
 
-namespace classe\bd;
+namespace Classes\bd;
 
-use classe\Album;
+require_once "Classes/models/Album.php";
+
+use Classes\models\Album;
 use PDO;
 use PDOException;
 
@@ -16,12 +18,14 @@ class AlbumBD
         $album = array();
         foreach ($result as $row) {
             $album = new Album();
-            $album->setId(intval($row['id']));
+            $album->setId(intval($row['album_id']));
             $album->setTitre($row['titre']);
-            $album->setArtiste($row['artiste']);
+            $album->setArtiste($row['artist_id']);
             $album->setAnnee(intval($row['annee']));
             $album->setGenre($row['genre']);
-            $album->setUrlImage($row['urlImage']);
+            if (isset($row['image_url'])) {
+                $album->setUrlImage($row['image_url']);
+            }
         }
         return $album;
     }
@@ -29,9 +33,9 @@ class AlbumBD
     public static function getAllAlbums(): array
     {
         try {
-            $pdo = new PDO('sqlite:music.sqlite3');
+            $pdo = new PDO('sqlite:bdd.sqlite3');
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $result = $pdo->query('SELECT * FROM ALBUM');
+            $result = $pdo->query('SELECT * FROM Albums');
             $pdo = null;
             return self::createArtistePhp($result);
         } catch (PDOException $e) {
@@ -43,9 +47,9 @@ class AlbumBD
     public static function getById($id): Album
     {
         try {
-            $pdo = new PDO('sqlite:music.sqlite3');
+            $pdo = new PDO('sqlite:bdd.sqlite3');
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $result = $pdo->query('SELECT * FROM ALBUM WHERE id = ' . $id);
+            $result = $pdo->query('SELECT * FROM Albums WHERE album_id = ' . $id);
             $pdo = null;
             return self::createArtistePhp($result);
         } catch (PDOException $e) {
@@ -57,9 +61,9 @@ class AlbumBD
     public static function getByGenre($genre): array|Album
     {
         try {
-            $pdo = new PDO('sqlite:music.sqlite3');
+            $pdo = new PDO('sqlite:bdd.sqlite3');
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $result = $pdo->query('SELECT * FROM ALBUM WHERE genre = "' . $genre . '"');
+            $result = $pdo->query('SELECT * FROM Albums WHERE genre = "' . $genre . '"');
             $pdo = null;
             return self::createArtistePhp($result);
         } catch (PDOException $e) {
@@ -71,9 +75,9 @@ class AlbumBD
     public static function getByAnnee($annee): array|Album
     {
         try {
-            $pdo = new PDO('sqlite:music.sqlite3');
+            $pdo = new PDO('sqlite:bdd.sqlite3');
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $result = $pdo->query('SELECT * FROM ALBUM WHERE annee = ' . $annee);
+            $result = $pdo->query('SELECT * FROM Albums WHERE annee = ' . $annee);
             $pdo = null;
             return self::createArtistePhp($result);
         } catch (PDOException $e) {
@@ -82,12 +86,12 @@ class AlbumBD
         }
     }
 
-    public static function getByArtiste($artiste): array|Album
+    public static function getByArtiste($artisteId): array|Album
     {
         try {
-            $pdo = new PDO('sqlite:music.sqlite3');
+            $pdo = new PDO('sqlite:bdd.sqlite3');
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $result = $pdo->query('SELECT * FROM ALBUM WHERE artiste = "' . $artiste . '"');
+            $result = $pdo->query('SELECT * FROM Albums WHERE artist_id = "' . $artisteId . '"');
             $pdo = null;
             return self::createArtistePhp($result);
         } catch (PDOException $e) {
