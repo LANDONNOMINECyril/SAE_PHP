@@ -10,27 +10,34 @@ use PDOException;
 
 class ArtisteBD
 {
-
-    public static function createArtistePhp($result): array|Artiste{
-        $artiste = array();
+    public static function createArtistePhp($result): array|Artiste
+    {
+        $artistes = array();
         foreach ($result as $row) {
             $artiste = new Artiste();
             $artiste->setId(intval($row['artist_id']));
             $artiste->setNom($row['nom']);
             $artiste->setSurnom($row['artist_name']);
-            if (isset($row['bio'])){
+
+            if (isset($row['bio'])) {
                 $artiste->setBio($row['bio']);
-            }
-            else{
+            } else {
                 $artiste->setBio("Aucune biographie disponible");
             }
+
             if (isset($row['image_url'])) {
                 $artiste->setUrlImage($row['image_url']);
             }
+
             $artiste->setAlbums(AlbumBD::getByArtiste($artiste->getId()));
+            $artistes[] = $artiste;
         }
-        return $artiste;
+
+        return $artistes;
     }
+
+    // ... Reste du code
+
     public static function getAllArtistes(): array
     {
         try {
@@ -50,7 +57,8 @@ class ArtisteBD
         try {
             $pdo = new PDO('sqlite:bdd.sqlite3');
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $result = $pdo->query('SELECT * FROM Artistes WHERE artist_id = ' . $id);
+            $result = $pdo->query('SELECT DISTINCT * FROM Artistes WHERE artist_id = ' . $id);
+
             $pdo = null;
             return self::createArtistePhp($result);
         } catch (PDOException $e) {

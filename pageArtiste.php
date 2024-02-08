@@ -9,6 +9,6 @@ $artistId = $_GET['artist_id'];
 // ...
 
 // Affichez les informations sur la page
-echo "<h1>Informations sur l'artiste</h1>";
+echo "<h1>Informations sur l'artiste</h1>", $artistId;
 // Affichez les autres détails de l'artiste
 ?>

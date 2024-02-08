@@ -33,7 +33,8 @@
     Autoloader::autoload("bd\AlbumBD");
     use Symfony\Component\Yaml\Yaml;
 
-    $albums = \Classes\bd\AlbumBD::getById(10714);
+    $id = $_GET['album_id'];
+    $albums = \Classes\bd\AlbumBD::getById($id);
     echo "<img src='fixtures/images/" . $albums->getUrlImage() . "' alt='Image de l'album' />";
     echo "<h2>Artiste : " . $albums->getArtiste() . "</h2>";
     echo "<h2>" . $albums->getTitre() . "</h2>";

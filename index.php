@@ -34,32 +34,33 @@
   <h2 class="titre-page">Contenu principal</h2>
   <p></p>
   <?php 
-
     require_once 'Classes/data/bd.php';
     createBD();
-
-    $db = new SQLite3('bdd.sqlite3');
-
+    
     require "Classes/Autoloader.php";
     Autoloader::register();
     Autoloader::autoload("bd\AlbumBD");
     use Symfony\Component\Yaml\Yaml;
-    $albums = \Classes\bd\AlbumBD::getAllAlbums();
 
-      ?>
-    <div class="liste-artiste">
-      <?php 
-          foreach ($albums as $album) {?>
-            <div class="artiste">
-              <img src="./Classes/data/IMG/The_Eminem_Show.jpg" alt="artiste1" />
-              <div class="contenu">
-                <a href=""><h3 class="test-arrow"><span><?php echo $album->getTitre() ?></span></h3></a>
-                <p> <?php  echo $album->getArtiste() ?></p>
-              </div>
+    $albums = \Classes\bd\AlbumBD::getAllAlbums();
+//var_dump($albums); // Ajoutez cette ligne pour voir les données récupérée
+    $db = new SQLite3('bdd.sqlite3');
+?>
+
+<div class="liste-artiste">
+    <?php foreach ($albums as $album) :
+      print_r($album->getId()) ?>
+        <div class="artiste">
+            <img src="./Classes/data/IMG/The_Eminem_Show.jpg" alt="artiste1" />
+            <div class="contenu">
+              
+                  <a href="album.php?album_id=<?php echo $album->getId(); ?>">   <h3 class="test-arrow"><span><?php echo $album->getTitre(); ?></span></h3> </a>
+      
+                <a href="pageArtiste.php?artist_id=<?php echo $album->getArtiste(); ?>">  <p class="test-arrow"><?php echo $album->getArtiste(); ?></p></a>
             </div>
-          <?php }
-      ?>
-          </div>
+        </div>
+    <?php endforeach; ?>
+</div>
 </main>
 
 <!-- Inclure Bootstrap JS (jQuery et Popper.js doivent être inclus avant) -->
