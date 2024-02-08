@@ -16,8 +16,8 @@ INSERT INTO Albums (album_id, titre, artist_id, annee, genre, image_url) VALUES
 (3, 'Heartbreaker', 3, 2000, 'Alternative country, country', '220px-RyanAdamsHeartbreaker.jpg'),
 (4, 'Ryan Adams', 4, 2014, 'Rock, alternative country, pop rock', '220px-Ryanadamsselftitled.jpg'),
 (5, 'Pneumonia', 5, 2001, 'Alternative country', '220px-WhiskeytownPneumonia.jpg'),
-(6, 'The Fine Art of Self Destruction', 6, 2002, null, 'The_Fine_Art_of_Self_Destruction.jpg'),
-(7, 'We Are Fuck You', 7, 2003, null, null),
+(6, 'The Fine Art of Self Destruction', 6, 2002, "rap", 'The_Fine_Art_of_Self_Destruction.jpg'),
+(7, 'We Are Fuck You', 7, 2003, "pasnullsinonErreur", "img.jpg"),
 (8, 'Love Is Hell', 8, 2004, 'Alternative country', '220px-Love_Is_Hell.jpg'),
 (9, 'Dark Chords on a Big Guitar', 9, 2003, 'Folk', '220px-DarkChords.jpg'),
 (10, 'Songbird', 10, 2006, 'Alternative country', '220px-Songbird_Willie_Nelson.jpg');

@@ -15,7 +15,8 @@ class AlbumBD
 
     public static function createArtistePhp($result): array|Album
     {
-        $album = array();
+        $albums = array();
+        
         foreach ($result as $row) {
             $album = new Album();
             $album->setId(intval($row['album_id']));
@@ -23,13 +24,22 @@ class AlbumBD
             $album->setArtiste($row['artist_id']);
             $album->setAnnee(intval($row['annee']));
             $album->setGenre($row['genre']);
+            
             if (isset($row['image_url'])) {
                 $album->setUrlImage($row['image_url']);
             }
+    
+            $albums[] = $album;
         }
-        return $album;
+    
+        if (count($albums) === 1) {
+            return $albums[0]; // Retourne l'objet Album si un seul élément
+        } else {
+            return $albums; // Retourne le tableau d'objets Album si plusieurs éléments
+        }
     }
-
+    
+    
     public static function getAllAlbums(): array
     {
         try {
