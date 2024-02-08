@@ -67,4 +67,6 @@ function createBD(){
         return null;
     }
 }
+
+createBD();
 ?>

@@ -26,6 +26,18 @@
 </aside>
 
 <main>
+    <?php
+    require "Classes/Autoloader.php";
+    Autoloader::register();
+    Autoloader::autoload("bd\UtilisateurBD");
+    use Symfony\Component\Yaml\Yaml;
+    $account = \Classes\bd\UtilisateurBD::getById(1);
+
+    echo "<h1>Mon Compte</h1>";
+    echo "<h2>Utilisateur : " . $account->getNom() . "</h2>";
+
+    
+    ?>
   
 </main>
 

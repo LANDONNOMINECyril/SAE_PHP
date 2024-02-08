@@ -27,7 +27,19 @@
 </aside>
 
 <main>
-  
+    <?php
+    require "Classes/Autoloader.php";
+    Autoloader::register();
+    Autoloader::autoload("bd\AlbumBD");
+    use Symfony\Component\Yaml\Yaml;
+
+    $albums = \Classes\bd\AlbumBD::getById(10714);
+    echo "<img src='fixtures/images/" . $albums->getUrlImage() . "' alt='Image de l'album' />";
+    echo "<h2>Artiste : " . $albums->getArtiste() . "</h2>";
+    echo "<h2>" . $albums->getTitre() . "</h2>";
+    echo "<h2>Genre : " . $albums->getGenre() . "</h2>";
+    echo "<h2>Date de sortie : " . $albums->getAnnee() . "</h2>";
+    ?>
 </main>
 
 <!-- Inclure Bootstrap JS (jQuery et Popper.js doivent être inclus avant) -->
