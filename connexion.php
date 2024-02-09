@@ -3,7 +3,6 @@
 session_start();
 
 require_once 'Classes/Autoloader.php';
-use Symfony\Component\Yaml\Yaml;
 
 // Connexion à la base de données (assurez-vous de remplacer ces valeurs par vos propres informations de connexion)
 
@@ -27,16 +26,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->bindParam(':mdp', $mdp);
         $stmt->execute();
         $res = $stmt->fetch(PDO::FETCH_ASSOC);
-        print_r(gettype($res));
-
         // Vérifier si l'utilisateur existe et si le mot de passe est correct
         if ($res==null) {
             // Identifiants invalides, afficher un message d'erreur
+            
             $erreur = "Identifiant ou mot de passe incorrect.";
             print_r($erreur);
+
         } else {
             // Authentification réussie, rediriger vers la page d'accueil par exemple
-            header("Location: connexion.php");
+            header("Location: accueil.php");
             exit;       
         }
     } else {
@@ -45,5 +44,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         print_r($erreur);
     }
 }
-
 ?>
+<!DOCTYPE html>
+<link rel="stylesheet" href="connexion.css">
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>Application spotify</title>
+</head>
+<body>
+<main>
+    <div id="centre">
+        <button type="button" class="button" onclick="window.location.href='login.php'">Retour</button>
+    </div>
+</main>
+</body>
+</html>
