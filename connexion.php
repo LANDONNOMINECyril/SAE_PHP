@@ -25,6 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt = $bdd->prepare($query);
         $stmt->bindParam(':identifiant', $user);
         $stmt->bindParam(':mdp', $mdp);
+        $stmt->execute();
         $res = $stmt->fetch(PDO::FETCH_ASSOC);
         print_r(gettype($res));
 
@@ -34,7 +35,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $erreur = "Identifiant ou mot de passe incorrect.";
             print_r($erreur);
         } else {
-            print_r("ok");
             // Authentification réussie, rediriger vers la page d'accueil par exemple
             header("Location: connexion.php");
             exit;       
