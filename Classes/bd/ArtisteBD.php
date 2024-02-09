@@ -10,33 +10,40 @@ use PDOException;
 
 class ArtisteBD
 {
-    public static function createArtistePhp($result): array|Artiste
-    {
-        $artistes = array();
-        foreach ($result as $row) {
-            $artiste = new Artiste();
-            $artiste->setId(intval($row['artist_id']));
-            $artiste->setNom($row['nom']);
-            $artiste->setSurnom($row['artist_name']);
+public static function createArtistePhp($result): Artiste|array
+{
+    $artistes = array();
 
-            if (isset($row['bio'])) {
-                $artiste->setBio($row['bio']);
-            } else {
-                $artiste->setBio("Aucune biographie disponible");
-            }
+    foreach ($result as $row) {
+        $artiste = new Artiste();
+        $artiste->setId(intval($row['artist_id']));
+        $artiste->setNom($row['nom']);
+        $artiste->setSurnom($row['artist_name']);
 
-            if (isset($row['image_url'])) {
-                $artiste->setUrlImage($row['image_url']);
-            }
-
-            $artiste->setAlbums(AlbumBD::getByArtiste($artiste->getId()));
-            $artistes[] = $artiste;
+        if (isset($row['bio'])) {
+            $artiste->setBio($row['bio']);
+        } else {
+            $artiste->setBio("Aucune biographie disponible");
         }
 
-        return $artistes;
+        if (isset($row['image_url'])) {
+            $artiste->setUrlImage($row['image_url']);
+        }
+
+        $artiste->setAlbums(AlbumBD::getByArtiste($artiste->getId()));
+        print_r($artistes);
+        $artistes[] = $artiste;
     }
 
-    // ... Reste du code
+    if (count($artistes) === 1) {
+        return $artistes[0]; // Retourne l'objet Artiste si un seul élément
+    } else {
+        return $artistes; // Retourne le tableau d'objets Artiste si plusieurs éléments
+    }
+}
+
+
+
 
     public static function getAllArtistes(): array
     {

@@ -49,11 +49,11 @@
 
 <div class="liste-artiste">
     <?php foreach ($albums as $album) :
-      print_r($album->getId()) ?>
+                    print_r($album) // TESTTTT
+      //print_r($album->getId()) ?>
         <div class="artiste">
             <img src="./Classes/data/IMG/The_Eminem_Show.jpg" alt="artiste1" />
             <div class="contenu">
-              
                   <a href="album.php?album_id=<?php echo $album->getId(); ?>">   <h3 class="test-arrow"><span><?php echo $album->getTitre(); ?></span></h3> </a>
       
                 <a href="pageArtiste.php?artist_id=<?php echo $album->getArtiste(); ?>">  <p class="test-arrow"><?php echo $album->getArtiste(); ?></p></a>

@@ -13,18 +13,18 @@ date_default_timezone_set('Europe/Paris');
 class AlbumBD
 {
 
-    public static function createArtistePhp($result): array|Album
+    public static function createAlbumPhp($result): array|Album
     {
         $albums = array();
-        
-        foreach ($result as $row) {
+    
+        while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
             $album = new Album();
             $album->setId(intval($row['album_id']));
             $album->setTitre($row['titre']);
             $album->setArtiste($row['artist_id']);
             $album->setAnnee(intval($row['annee']));
             $album->setGenre($row['genre']);
-            
+    
             if (isset($row['image_url'])) {
                 $album->setUrlImage($row['image_url']);
             }
@@ -47,7 +47,7 @@ class AlbumBD
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $result = $pdo->query('SELECT * FROM Albums');
             $pdo = null;
-            return self::createArtistePhp($result);
+            return self::createAlbumPhp($result);
         } catch (PDOException $e) {
             echo "Error !: " . $e->getMessage() . "<br/>";
             die();
@@ -61,7 +61,7 @@ class AlbumBD
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $result = $pdo->query('SELECT * FROM Albums WHERE album_id = ' . $id);
             $pdo = null;
-            return self::createArtistePhp($result);
+            return self::createAlbumPhp($result);
         } catch (PDOException $e) {
             echo "Error !: " . $e->getMessage() . "<br/>";
             die();
@@ -75,7 +75,7 @@ class AlbumBD
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $result = $pdo->query('SELECT * FROM Albums WHERE genre = "' . $genre . '"');
             $pdo = null;
-            return self::createArtistePhp($result);
+            return self::createAlbumPhp($result);
         } catch (PDOException $e) {
             echo "Error !: " . $e->getMessage() . "<br/>";
             die();
@@ -89,7 +89,7 @@ class AlbumBD
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $result = $pdo->query('SELECT * FROM Albums WHERE annee = ' . $annee);
             $pdo = null;
-            return self::createArtistePhp($result);
+            return self::createAlbumPhp($result);
         } catch (PDOException $e) {
             echo "Error !: " . $e->getMessage() . "<br/>";
             die();
@@ -103,7 +103,7 @@ class AlbumBD
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $result = $pdo->query('SELECT * FROM Albums WHERE artist_id = "' . $artisteId . '"');
             $pdo = null;
-            return self::createArtistePhp($result);
+            return self::createAlbumPhp($result);
         } catch (PDOException $e) {
             echo "Error !: " . $e->getMessage() . "<br/>";
             die();

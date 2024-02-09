@@ -37,8 +37,8 @@ class Album
 
     public function getArtiste(): string
     {
-        //return ArtisteBD::getById($this->artiste)->getNom(); // CETTE LIGNE POSE VRAIMENT UN PROBLÈME !!!!!!
-        return "Découvrir l'artiste";
+        return ArtisteBD::getById($this->artiste)->getNom(); // CETTE LIGNE POSE VRAIMENT UN PROBLÈME !!!!!!
+        //return "Découvrir l'artiste";
     }
 
     public function setArtiste(int $artiste): void
