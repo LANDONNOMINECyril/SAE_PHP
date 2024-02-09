@@ -13,15 +13,13 @@ function createBD(){
 
         // Exécuter le contenu du fichier SQL
         $file_db->exec($sqlContent);
-
-        print_r("Base de données créée");
         
         #les insert de extrait.yaml
         $products = Yaml::parseFile(__DIR__."/extrait.yaml");
 
 
         foreach ($products as $product) {
-            $insert = "INSERT INTO Albums (album_id, titre, artist_id, annee, genre, image_url) VALUES (:a, :b, :c, :d, :e, :f);";
+            $insert = "INSERT INTO Albums (album_id, titre, artist_id, annee, image_url) VALUES (:a, :b, :c, :d, :f)";
             $stmt = $file_db->prepare($insert);
             $stmt->bindParam(':a', $product['entryId']);
             $stmt->bindParam(':b', $product['title']);
@@ -33,13 +31,23 @@ function createBD(){
             $res = $verif->fetch(PDO::FETCH_ASSOC);
             
             #si il existe pas alors on en crée un nouveau
-            if($res == null){
+                if($res == null){
                 $nvinsert = "INSERT INTO Artistes (nom, artist_name) VALUES (:w, :x)";
                 $crea = $file_db->prepare($nvinsert);
                 $crea->bindParam(':w', $product['parent']);
                 $crea->bindParam(':x', $product['parent']);
                 $crea->execute();
+
+                # Récupérer l'ID de l'artiste nouvellement inséré
+                $artist_id = $file_db->lastInsertId();
+            } else {
+                #si l'artiste existe déjà, récupérer son ID
+                $artist_id = $res['artist_id'];
             }
+
+            # Utiliser l'ID de l'artiste pour lier l'album à l'artiste
+            $stmt->bindParam(':c', $artist_id);
+
             #sinon on continue juste
             $artiste = $file_db->prepare("SELECT artist_id FROM Artistes WHERE artist_name = :artiste");
             $artiste->bindParam(':artiste', $product['parent']);
@@ -47,19 +55,38 @@ function createBD(){
             $res = $artiste->fetch(PDO::FETCH_ASSOC);
             $stmt->bindParam(':c', $res['artist_id']);
             $stmt->bindParam(':d', $product['releaseYear']);
-            $stmt->bindParam(':e', $product['genre']);
             $stmt->bindParam(':f', $product['img']);
             $stmt->execute();
+
+            #création des genres
+            foreach($product['genre'] as $genre){
+                $verif = $file_db->prepare("SELECT nom_genre FROM Genre WHERE nom_genre = :an");          
+                $verif->bindParam(':an', $genre);
+                $verif->execute();
+                $res = $verif->fetch(PDO::FETCH_ASSOC);
+                if ($res==null){
+                    $insertGenre = "INSERT INTO Genre (nom_genre) VALUES (:e)";
+                    $stmt = $file_db->prepare($insertGenre);
+                    $stmt->bindParam(':e', $genre);
+                    $stmt->execute();
+                }
+
+
+                #relation entre genre et albums
+                $insert = "INSERT INTO Types_albums (album_id, nom_genre) VALUES(:u, :v);";
+                $stmt = $file_db->prepare($insert);
+                $stmt->bindParam(':u', $product['entryId']);
+                $stmt->bindParam(':v', $genre);
+                $stmt->execute();
+            }
         }
 
         $sqlFile = __DIR__ . "/insert.sql";
         $sqlContent = file_get_contents($sqlFile);
-        print_r($sqlContent);
 
         // Exécuter le contenu du fichier SQL
         $file_db->exec($sqlContent);
 
-        print_r("Insert ajoutés");
     }
     catch(PDOException $ex) {
         // Gestion des exceptions
