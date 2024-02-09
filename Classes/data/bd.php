@@ -31,13 +31,23 @@ function createBD(){
             $res = $verif->fetch(PDO::FETCH_ASSOC);
             
             #si il existe pas alors on en crée un nouveau
-            if($res == null){
+                if($res == null){
                 $nvinsert = "INSERT INTO Artistes (nom, artist_name) VALUES (:w, :x)";
                 $crea = $file_db->prepare($nvinsert);
                 $crea->bindParam(':w', $product['parent']);
                 $crea->bindParam(':x', $product['parent']);
                 $crea->execute();
+
+                # Récupérer l'ID de l'artiste nouvellement inséré
+                $artist_id = $file_db->lastInsertId();
+            } else {
+                #si l'artiste existe déjà, récupérer son ID
+                $artist_id = $res['artist_id'];
             }
+
+            # Utiliser l'ID de l'artiste pour lier l'album à l'artiste
+            $stmt->bindParam(':c', $artist_id);
+
             #sinon on continue juste
             $artiste = $file_db->prepare("SELECT artist_id FROM Artistes WHERE artist_name = :artiste");
             $artiste->bindParam(':artiste', $product['parent']);

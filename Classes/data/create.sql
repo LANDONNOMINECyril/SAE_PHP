@@ -58,13 +58,13 @@ CREATE TABLE IF NOT EXISTS Notes_Albums (
 );
 
 CREATE TABLE IF NOT EXISTS Genre (
-    nom_genre TEXT PRIMARY KEY
+    nom_genre VARCHAR(255) PRIMARY KEY
 );
 
 CREATE TABLE IF NOT EXISTS Types_Albums (
     album_id INTEGER NOT NULL, 
-    nom_genre TEXT NOT NULL,
+    nom_genre VARCHAR(255) NOT NULL, -- Adjust the length as needed
     FOREIGN KEY (album_id) REFERENCES Albums(album_id),
-    FOREIGN KEY (nom_genre) REFERENCES Genres(nom_genre),
+    FOREIGN KEY (nom_genre) REFERENCES Genre(nom_genre), -- Corrected the table name to match the actual one
     PRIMARY KEY (album_id, nom_genre)
 );
