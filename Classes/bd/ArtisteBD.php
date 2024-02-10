@@ -10,28 +10,41 @@ use PDOException;
 
 class ArtisteBD
 {
-public static function createArtistePhp($result): Artiste|array
+    public static function createArtistePhp($result): Artiste|array
 {
     $artistes = array();
 
-    foreach ($result as $row) {
+    if (is_array($result) && count($result) > 0) {
+        foreach ($result as $row) {
+            $artiste = new Artiste();
+            $artiste->setId(intval($row['artist_id']) ? $row['artist_id'] : 15);
+            
+            $artiste->setNom(isset($row['nom']) ? $row['nom'] : "");
+            $artiste->setSurnom(isset($row['artist_name']) ? $row['artist_name'] : "");
+
+            if (isset($row['bio'])) {
+                $artiste->setBio($row['bio']);
+            } else {
+                $artiste->setBio("Aucune biographie disponible");
+            }
+
+            if (isset($row['image_url'])) {
+                $artiste->setUrlImage($row['image_url']);
+            }
+
+            $artiste->setAlbums(AlbumBD::getByArtiste($artiste->getId()));
+            print_r($artistes);
+            $artistes[] = $artiste;
+        }
+    } else {
+        // Créer un artiste avec des données vides
         $artiste = new Artiste();
-        $artiste->setId(intval($row['artist_id']));
-        $artiste->setNom($row['nom']);
-        $artiste->setSurnom($row['artist_name']);
+        $artiste->setId(15);
+        $artiste->setNom("");
+        $artiste->setSurnom("");
+        $artiste->setBio("Aucune biographie disponible");
+        $artiste->setAlbums([]);
 
-        if (isset($row['bio'])) {
-            $artiste->setBio($row['bio']);
-        } else {
-            $artiste->setBio("Aucune biographie disponible");
-        }
-
-        if (isset($row['image_url'])) {
-            $artiste->setUrlImage($row['image_url']);
-        }
-
-        $artiste->setAlbums(AlbumBD::getByArtiste($artiste->getId()));
-        print_r($artistes);
         $artistes[] = $artiste;
     }
 
@@ -42,6 +55,7 @@ public static function createArtistePhp($result): Artiste|array
     }
 }
 
+    
 
 
 
@@ -58,19 +72,28 @@ public static function createArtistePhp($result): Artiste|array
             die();
         }
     }
-
-    public static function getById($id): Artiste
+    
+    public static function getById($id): Artiste|string
     {
         try {
             $pdo = new PDO('sqlite:bdd.sqlite3');
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $result = $pdo->query('SELECT DISTINCT * FROM Artistes WHERE artist_id = ' . $id);
-
+            $rows = $result->fetchAll(PDO::FETCH_ASSOC);
+    
             $pdo = null;
-            return self::createArtistePhp($result);
+    
+            if ($rows && count($rows) > 0) {
+                return self::createArtistePhp($rows);
+            } else {
+                return "Artiste non trouvé";
+            }
         } catch (PDOException $e) {
             echo "Error !: " . $e->getMessage() . "<br/>";
             die();
         }
     }
+    
+    
+    
 }

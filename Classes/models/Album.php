@@ -37,6 +37,9 @@ class Album
 
     public function getArtiste(): string
     {
+        if(is_string(ArtisteBD::getById($this->artiste))){
+            return "Artiste inconnue";
+        }
         return ArtisteBD::getById($this->artiste)->getNom(); // CETTE LIGNE POSE VRAIMENT UN PROBLÈME !!!!!!
         //return "Découvrir l'artiste";
     }

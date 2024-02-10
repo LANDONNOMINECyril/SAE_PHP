@@ -16,7 +16,6 @@ class AlbumBD
     public static function createAlbumPhp($result): array|Album
     {
         $albums = array();
-    
         while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
             $album = new Album();
             $album->setId(intval($row['album_id']));
@@ -30,6 +29,7 @@ class AlbumBD
             }
     
             $albums[] = $album;
+            //print_r($albums);
         }
     
         if (count($albums) === 1) {
