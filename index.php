@@ -37,24 +37,46 @@
     require_once 'Classes/data/bd.php';
     createBD();
     
-    require "Classes/Autoloader.php";
+    require_once "Classes/Autoloader.php";
     Autoloader::register();
-    Autoloader::autoload("bd\AlbumBD");
+    
+    // Chargez les classes avec les espaces de noms
+    use Classes\bd\AlbumBD;
+    use Classes\bd\ArtisteBD;
     use Symfony\Component\Yaml\Yaml;
+    
 
     $albums = \Classes\bd\AlbumBD::getAllAlbums();
+    $artistes = \Classes\bd\ArtisteBD::getAllArtistes();
+    foreach ($artistes as $artiste){
+      //print_r($artiste->getNom());
+    }
 //var_dump($albums); // Ajoutez cette ligne pour voir les données récupérée
     $db = new SQLite3('bdd.sqlite3');
 ?>
 
 <div class="liste-artiste">
     <?php foreach ($albums as $album) :
-                    print_r($album) // TESTTTT
-      //print_r($album->getId()) ?>
+    $debut = "fixtures/images/";
+    $url ="";
+    if($album->getUrlImage() != "" && $album->getUrlImage() != "img.jpg"){
+      $url = $debut . $album->getUrlImage();
+
+    }
+
+    if($album->getUrlImage() === ""){
+      $album->setUrlImage("default.jpg");
+      $url = $debut . $album->getUrlImage();
+    }
+
+
+                    //print_r($album) // TESTTTT
+      //print_r($album->getArtiste()) ?>
         <div class="artiste">
-            <img src="./Classes/data/IMG/The_Eminem_Show.jpg" alt="artiste1" />
+            <img src="<?php echo $url; ?>" alt="artiste1" />
+
             <div class="contenu">
-                  <a href="album.php?album_id=<?php echo $album->getId(); ?>">   <h3 class="test-arrow"><span><?php echo $album->getTitre(); ?></span></h3> </a>
+            <a href="album.php?album_id=<?php echo $album->getId(); ?>">  <h3 class="test-arrow"><span><?php echo $album->getTitre(); ?></span></h3> </a>
       
                 <a href="pageArtiste.php?artist_id=<?php echo $album->getArtiste(); ?>">  <p class="test-arrow"><?php echo $album->getArtiste(); ?></p></a>
             </div>

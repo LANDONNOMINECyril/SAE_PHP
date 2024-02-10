@@ -13,7 +13,7 @@ class Album
     private int $artiste;
     private int $annee;
     private string $genre;
-    private string $urlImage;
+    private string $urlImage = "";
 
     public function getId(): int
     {
@@ -38,7 +38,7 @@ class Album
     public function getArtiste(): string
     {
         if(is_string(ArtisteBD::getById($this->artiste))){
-            return "Artiste inconnue";
+            return ArtisteBD::getById($this->artiste);
         }
         return ArtisteBD::getById($this->artiste)->getNom(); // CETTE LIGNE POSE VRAIMENT UN PROBLÈME !!!!!!
         //return "Découvrir l'artiste";
