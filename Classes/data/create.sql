@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS Types_Albums;
+DROP TABLE IF EXISTS Genre;
 DROP TABLE IF EXISTS Notes_Albums;
 DROP TABLE IF EXISTS Playlist_Items;
 DROP TABLE IF EXISTS Playlists;
@@ -26,7 +28,6 @@ CREATE TABLE IF NOT EXISTS Albums (
     titre TEXT NOT NULL,
     artist_id INTEGER NOT NULL,
     annee INTEGER,
-    genre TEXT,
     image_url TEXT,
     FOREIGN KEY (artist_id) REFERENCES Artistes(artist_id)
 );
@@ -54,4 +55,16 @@ CREATE TABLE IF NOT EXISTS Notes_Albums (
     note INTEGER CHECK(note >= 1 AND note <= 10),
     FOREIGN KEY (user_id) REFERENCES Utilisateurs(user_id),
     FOREIGN KEY (album_id) REFERENCES Albums(album_id)
+);
+
+CREATE TABLE IF NOT EXISTS Genre (
+    nom_genre VARCHAR(255) PRIMARY KEY
+);
+
+CREATE TABLE IF NOT EXISTS Types_Albums (
+    album_id INTEGER NOT NULL, 
+    nom_genre VARCHAR(255) NOT NULL, -- Adjust the length as needed
+    FOREIGN KEY (album_id) REFERENCES Albums(album_id),
+    FOREIGN KEY (nom_genre) REFERENCES Genre(nom_genre), -- Corrected the table name to match the actual one
+    PRIMARY KEY (album_id, nom_genre)
 );

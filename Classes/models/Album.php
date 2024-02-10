@@ -3,8 +3,10 @@
 namespace Classes\models;
 
 require_once "Classes/bd/ArtisteBD.php";
+require_once "Classes/bd/TypeAlbumBD.php";
 
 use Classes\bd\ArtisteBD;
+use Classes\bd\TypeAlbumBD;
 
 class Album
 {
@@ -61,7 +63,16 @@ class Album
 
     public function getGenre(): string
     {
-        return $this->genre;
+        $listeGenre = "";
+        if(is_array(TypeAlbumBD::getGenresByAlbumId($this->getId()))){
+            foreach(TypeAlbumBD::getGenresByAlbumId($this->getId()) as $genre){
+                $listeGenre = $listeGenre . " , " . $genre->getNomGenre();
+            }
+            return $listeGenre;
+        }
+        return TypeAlbumBD::getGenresByAlbumId($this->getId())->getNomGenre();
+
+
     }
 
     public function setGenre(string $genre): void

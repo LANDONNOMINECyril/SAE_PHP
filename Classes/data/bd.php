@@ -13,15 +13,13 @@ function createBD(){
 
         // Exécuter le contenu du fichier SQL
         $file_db->exec($sqlContent);
-
-        #print_r("Base de données créée");
         
         #les insert de extrait.yaml
         $products = Yaml::parseFile(__DIR__."/extrait.yaml");
 
 
         foreach ($products as $product) {
-            $insert = "INSERT INTO Albums (album_id, titre, artist_id, annee, genre, image_url) VALUES (:a, :b, :c, :d, :e, :f);";
+            $insert = "INSERT INTO Albums (album_id, titre, artist_id, annee, image_url) VALUES (:a, :b, :c, :d, :f)";
             $stmt = $file_db->prepare($insert);
             $stmt->bindParam(':a', $product['entryId']);
             $stmt->bindParam(':b', $product['title']);
@@ -33,54 +31,62 @@ function createBD(){
             $res = $verif->fetch(PDO::FETCH_ASSOC);
             
             #si il existe pas alors on en crée un nouveau
-            // Vérifiez si l'artiste existe déjà
-            if ($res == null) {
-                // Calculer le nouvel ID en ajoutant 1 au nombre total d'artistes
-                $countQuery = "SELECT COUNT(*) AS total FROM Artistes";
-                $countResult = $file_db->query($countQuery);
-                $count = $countResult->fetch(PDO::FETCH_ASSOC)['total'];
-                $artistId = $count + 1;
-
-                // Insérer le nouvel artiste dans la base de données
-                $nvinsert = "INSERT INTO Artistes (artist_id, nom, artist_name, bio, image_url) VALUES (:id, :w, :x, :y, :z)";
+                if($res == null){
+                $nvinsert = "INSERT INTO Artistes (nom, artist_name) VALUES (:w, :x)";
                 $crea = $file_db->prepare($nvinsert);
-                $crea->bindParam(':id', $artistId);
                 $crea->bindParam(':w', $product['by']);
                 $crea->bindParam(':x', $product['by']);
-
-                // Vous pouvez définir des valeurs par défaut pour bio et image_url
-                $defaultBio = "Aucune biographie disponible";
-                $defaultImageUrl = ""; // Mettez la valeur par défaut souhaitée
-
-                $crea->bindParam(':y', $defaultBio);
-                $crea->bindParam(':z', $defaultImageUrl);
-
                 $crea->execute();
+
+                # Récupérer l'ID de l'artiste nouvellement inséré
+                $artist_id = $file_db->lastInsertId();
             } else {
-                // L'artiste existe déjà, vous pouvez choisir de mettre à jour ses informations ici si nécessaire.
+                #si l'artiste existe déjà, récupérer son ID
+                $artist_id = $res['artist_id'];
             }
 
+            # Utiliser l'ID de l'artiste pour lier l'album à l'artiste
+            $stmt->bindParam(':c', $artist_id);
 
             #sinon on continue juste
             $artiste = $file_db->prepare("SELECT artist_id FROM Artistes WHERE artist_name = :artiste");
-            $artiste->bindParam(':artiste', $product['parent']);
+            $artiste->bindParam(':artiste', $product['by']);
             $artiste->execute();
             $res = $artiste->fetch(PDO::FETCH_ASSOC);
             $stmt->bindParam(':c', $res['artist_id']);
             $stmt->bindParam(':d', $product['releaseYear']);
-            $stmt->bindParam(':e', $product['genre']);
             $stmt->bindParam(':f', $product['img']);
             $stmt->execute();
+
+            #création des genres
+            foreach($product['genre'] as $genre){
+                $verif = $file_db->prepare("SELECT nom_genre FROM Genre WHERE nom_genre = :an");          
+                $verif->bindParam(':an', $genre);
+                $verif->execute();
+                $res = $verif->fetch(PDO::FETCH_ASSOC);
+                if ($res==null){
+                    $insertGenre = "INSERT INTO Genre (nom_genre) VALUES (:e)";
+                    $stmt = $file_db->prepare($insertGenre);
+                    $stmt->bindParam(':e', $genre);
+                    $stmt->execute();
+                }
+
+
+                #relation entre genre et albums
+                $insert = "INSERT INTO Types_albums (album_id, nom_genre) VALUES(:u, :v);";
+                $stmt = $file_db->prepare($insert);
+                $stmt->bindParam(':u', $product['entryId']);
+                $stmt->bindParam(':v', $genre);
+                $stmt->execute();
+            }
         }
 
         $sqlFile = __DIR__ . "/insert.sql";
         $sqlContent = file_get_contents($sqlFile);
-        #print_r($sqlContent);
 
         // Exécuter le contenu du fichier SQL
         $file_db->exec($sqlContent);
 
-        #print_r("Insert ajoutés");
     }
     catch(PDOException $ex) {
         // Gestion des exceptions
@@ -88,6 +94,4 @@ function createBD(){
         return null;
     }
 }
-
-createBD();
 ?>

@@ -27,16 +27,27 @@
 
 <main>
     <?php
-    require "Classes/Autoloader.php";
-    Autoloader::register();
-    Autoloader::autoload("bd\UtilisateurBD");
-    use Symfony\Component\Yaml\Yaml;
-    $account = \Classes\bd\UtilisateurBD::getById(1);
-
-    echo "<h1>Mon Compte</h1>";
-    echo "<h2>Utilisateur : " . $account->getNom() . "</h2>";
-
+    require_once 'Classes/data/bd.php';
     
+    require_once "Classes/Autoloader.php";
+    Autoloader::register();
+    
+    // Chargez les classes avec les espaces de noms
+    use Classes\bd\AlbumBD;
+    use Classes\bd\ArtisteBD;
+    use Classes\bd\UtilisateurBD;
+    use Symfony\Component\Yaml\Yaml;
+
+    session_start();
+  
+
+
+  // Get the user account information
+  $account = \Classes\bd\UtilisateurBD::getById($_SESSION['id']);
+
+  echo "<h1>Mon Compte</h1>";
+  echo "<h2>Utilisateur : " . $account->getNom() . "</h2>";
+
     ?>
   
 </main>
