@@ -4,5 +4,5 @@
 
     require_once 'Classes/data/bd.php';
     createBD();
-    require_once 'login.php'
+    header('Location: login.php?res=debut');
 ?>

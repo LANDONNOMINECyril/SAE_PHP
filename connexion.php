@@ -30,8 +30,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($res==null) {
             // Identifiants invalides, afficher un message d'erreur
             
-            $erreur = "Identifiant ou mot de passe incorrect.";
-            print_r($erreur);
+            header("Location: login.php?res=identifiants_invalides");
+            exit;
 
         } else {
             // Authentification réussie, rediriger vers la page d'accueil par exemple
@@ -40,23 +40,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     } else {
         // Champs manquants, afficher un message d'erreur
-        $erreur = "Veuillez remplir tous les champs.";
-        print_r($erreur);
+        header("Location: login.php?res=identifiants_manquants");
+        exit;
     }
 }
 ?>
-<!DOCTYPE html>
-<link rel="stylesheet" href="connexion.css">
-<html lang="fr">
-<head>
-    <meta charset="utf-8">
-    <title>Application spotify</title>
-</head>
-<body>
-<main>
-    <div id="centre">
-        <button type="button" class="button" onclick="window.location.href='login.php'">Retour</button>
-    </div>
-</main>
-</body>
-</html>

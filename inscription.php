@@ -25,7 +25,7 @@ $res = $_GET["res"];
             <?php } ?>
             <button type="submit" class="button">S'inscrire</button>
         </form>
-        <button type="button" class="button" onclick="window.location.href='login.php'">Se connecter</button>
+        <button type="button" class="button" onclick="window.location.href='login.php?res=debut'">Se connecter</button>
         <?php if ($res == "identifiants_manquants"){?>
             <p>Veuillez remplir tous les champs</p>
         <?php } else if ($res == "identifiants_existants"){?>
@@ -34,7 +34,7 @@ $res = $_GET["res"];
     </div>
     <?php } else {?>
         <p>Vous êtes inscrit</p>
-        <button type="button" class="button" onclick="window.location.href='login.php'">Se connecter</button>
+        <button type="button" class="button" onclick="window.location.href='login.php?res=debut'">Se connecter</button>
     <?php }?>
 </main>
 </body>
