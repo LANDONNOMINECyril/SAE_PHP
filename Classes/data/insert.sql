@@ -9,7 +9,7 @@ INSERT INTO Utilisateurs (user_id, nom_utilisateur, mot_de_passe, email, image_u
 (8, 'lisa_jackson', 'secure_lisa', 'lisa.jackson@example.com', null),
 (9, 'alex_brown', 'brown_secure', 'alex.brown@example.com', null),
 (10, 'sarah_adams', 'adams123', 'sarah.adams@example.com', null),
-(11, 'i1','m1', null, null);
+(11, 'i1','m1', 'i1', null);
 
 INSERT INTO Artistes (artist_id, nom, artist_name, bio, image_url) VALUES
 (40, 'Superdrag', 'Superdrag', 'Superdrag is an American alternative rock band from Knoxville, Tennessee, United States, consisting of John Davis (vocals, guitar), Brandon Fisher (guitar), Tom Pappas (bass), and Don Coffey Jr. (drums).', 'superdrag.jpg'),

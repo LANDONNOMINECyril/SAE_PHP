@@ -18,7 +18,7 @@
             <?php } ?>
             <button type="submit" class="button">Se connecter</button>
         </form>
-        <button type="button" class="button" onclick="window.location.href='inscription.php'">S'inscrire</button>
+        <button type="button" class="button" onclick="window.location.href='inscription.php?res=debut'">S'inscrire</button>
     </div>
 </main>
 </body>
