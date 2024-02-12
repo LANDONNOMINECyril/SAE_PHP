@@ -12,8 +12,12 @@
 <body>
 
 <header>
-    <h3><input type="text" placeholder="Rechercher un album..."></h3>
+    <form action="" method="GET">
+        <input type="text" name="search_query" placeholder="Rechercher un album...">
+        <button type="submit">Rechercher</button>
+    </form>
 </header>
+
 
 <aside>
   <nav>
@@ -42,25 +46,20 @@ require_once 'Classes/data/bd.php'; // Assurez-vous que ce fichier contient la d
 
 $dbFilename = 'bdd.sqlite3';
 
-if (!file_exists($dbFilename)) {
-    // La base de données n'existe pas, on peut la créer
-    $db = new SQLite3($dbFilename);
-
-    // Ajoutez ici la logique pour créer les tables et autres initialisations si nécessaire
-    createBD();
-    
-    
-    // Chargez les classes avec les espaces de noms
-    // ...
-    
-
-  } 
   Autoloader::register();
   use Classes\bd\AlbumBD;
   use Classes\bd\ArtisteBD;
   use Symfony\Component\Yaml\Yaml;
 
-    $albums = \Classes\bd\AlbumBD::getAllAlbums();
+  if(isset($_GET['search_query']) && $_GET['search_query'] !== '') {
+      $search_query = $_GET['search_query'];
+      $albums = \Classes\bd\AlbumBD::getAlbumsbyQuery($search_query);
+  } else {
+      $albums = \Classes\bd\AlbumBD::getAllAlbums();
+  }
+    
+
+    
     $artistes = \Classes\bd\ArtisteBD::getAllArtistes();
     foreach ($artistes as $artiste){
       //print_r($artiste->getNom());
