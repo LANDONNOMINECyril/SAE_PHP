@@ -26,22 +26,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->bindParam(':mdp', $mdp);
         $stmt->execute();
         $res = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $_SESSION['user'] = $user;
+        $_SESSION['admin'] = !($res['type_uti'] == 1);
         // Vérifier si l'utilisateur existe et si le mot de passe est correct
         if ($res==null) {  
             header("Location: login.php?res=identifiants_invalides");
             exit;
 
         } else {
-            print_r($res);
-            if($res['type_uti'] == 1){
-                // Authentification réussie, rediriger vers la page d'accueil par exemple
-                header("Location: accueil.php");
-                exit;       
-            }
-            else{
-                header("Location: accueil_admin.php");
-                exit;
-            }
+            header("Location: accueil.php");
+            exit;
         }
     } else {
         // Champs manquants, afficher un message d'erreur

@@ -28,6 +28,10 @@
 
 <main>
     <?php
+    session_start();
+
+    $admin = $_SESSION['admin'];
+
     require "Classes/Autoloader.php";
     Autoloader::register();
     Autoloader::autoload("bd\AlbumBD");
@@ -40,6 +44,9 @@
     echo "<h2>" . $albums->getTitre() . "</h2>";
     echo "<h2>Genre : " . $albums->getGenre() . "</h2>";
     echo "<h2>Date de sortie : " . $albums->getAnnee() . "</h2>";
+    if ($admin) {
+        echo "<a href='modifierAlbum.php?album_id=" . $albums->getId() . "'>Modifier</a>";
+    }
     ?>
 </main>
 

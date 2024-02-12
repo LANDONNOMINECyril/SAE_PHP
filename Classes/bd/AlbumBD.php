@@ -109,4 +109,16 @@ class AlbumBD
             die();
         }
     }
+
+    public static function deleteAlbum($title){
+        try {
+            $pdo = new PDO('sqlite:bdd.sqlite3');
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $pdo->exec('DELETE FROM Albums WHERE titre = "' . $title . '"');
+            $pdo = null;
+        } catch (PDOException $e) {
+            echo "Error !: " . $e->getMessage() . "<br/>";
+            die();
+        }
+    }
 }
