@@ -39,14 +39,16 @@
     use Symfony\Component\Yaml\Yaml;
 
     session_start();
-  
 
+    $user = $_SESSION['user'];
+
+    echo "<h1>".$user."</h1>";
 
   // Get the user account information
-  $account = \Classes\bd\UtilisateurBD::getById($_SESSION['id']);
-
-  echo "<h1>Mon Compte</h1>";
-  echo "<h2>Utilisateur : " . $account->getNom() . "</h2>";
+//  $account = \Classes\bd\UtilisateurBD::getById($_SESSION['id']);
+//
+//  echo "<h1>Mon Compte</h1>";
+//  echo "<h2>Utilisateur : " . $account->getNom() . "</h2>";
 
     ?>
   

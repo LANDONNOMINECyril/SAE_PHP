@@ -28,6 +28,10 @@
 
 <main>
     <?php
+    session_start();
+
+    $admin = $_SESSION['admin'];
+
     require "Classes/Autoloader.php";
     Autoloader::register();
     use Classes\bd\AlbumBD;
@@ -67,7 +71,13 @@
         \Classes\bd\NoteAlbumBD::ajouterNote($notation, intval($id));
         header("Location: album.php?album_id=".$id);
     }
+
+    if ($admin) {
+        echo "<a href='modifierAlbum.php?album_id=" . $album->getId() . "'>Modifier</a>";
+}
 ?>
+?>
+
 
 </main>
 
