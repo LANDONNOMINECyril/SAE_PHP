@@ -16,7 +16,7 @@
             $path = str_replace('\\', '/', $fqcn);
             
             // Charge le fichier de la classe en utilisant le chemin calculé
-            require "Classes/" . $path . '.php';
+            require  $path . '.php';
         }
     }
 ?>

@@ -26,7 +26,7 @@ function createBD(){
             
             # on vérifie si l'artiste existe lorsque l'on ajoute un de ses albums
             $verif = $file_db->prepare("SELECT artist_id FROM Artistes WHERE artist_name = :an");          
-            $verif->bindParam(':an', $product['parent']);
+            $verif->bindParam(':an', $product['by']);
             $verif->execute();
             $res = $verif->fetch(PDO::FETCH_ASSOC);
             
@@ -34,8 +34,8 @@ function createBD(){
                 if($res == null){
                 $nvinsert = "INSERT INTO Artistes (nom, artist_name) VALUES (:w, :x)";
                 $crea = $file_db->prepare($nvinsert);
-                $crea->bindParam(':w', $product['parent']);
-                $crea->bindParam(':x', $product['parent']);
+                $crea->bindParam(':w', $product['by']);
+                $crea->bindParam(':x', $product['by']);
                 $crea->execute();
 
                 # Récupérer l'ID de l'artiste nouvellement inséré
@@ -50,7 +50,7 @@ function createBD(){
 
             #sinon on continue juste
             $artiste = $file_db->prepare("SELECT artist_id FROM Artistes WHERE artist_name = :artiste");
-            $artiste->bindParam(':artiste', $product['parent']);
+            $artiste->bindParam(':artiste', $product['by']);
             $artiste->execute();
             $res = $artiste->fetch(PDO::FETCH_ASSOC);
             $stmt->bindParam(':c', $res['artist_id']);
