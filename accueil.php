@@ -5,7 +5,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Votre Page</title>
-  <!-- Inclure Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="index.css">
   <link rel ="stylesheet" href="static/album.css">
@@ -19,7 +18,7 @@
 <aside>
   <nav>
     <ul>
-      <li><a href="index.php">Explorer la liste d'album</a></li>
+      <li><a href="accueil.php">Explorer la liste d'album</a></li>
       <li><a href="#">Mes favoris</a></li>
       <li><a href="#">Mon historique</a></li>
       <li><a href="monCompte.php">Mon Compte</a></li>

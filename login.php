@@ -1,3 +1,6 @@
+<?php
+$res = $_GET["res"];
+?>
 <!DOCTYPE html>
 <link rel="stylesheet" href="login.css">
 <html lang="fr">
@@ -18,8 +21,13 @@
             <?php } ?>
             <button type="submit" class="button">Se connecter</button>
         </form>
-        <button type="button" class="button" onclick="window.location.href='inscription.php'">S'inscrire</button>
+        <button type="button" class="button" onclick="window.location.href='inscription.php?res=debut'">S'inscrire</button>
     </div>
+    <?php if($res == "identifiants_manquants"){?>
+        <p>Veuillez remplir tous les champs</p>
+    <?php } else if($res == "identifiants_invalides"){?>
+        <p>Les identifiants sont invalides</p>
+    <?php }?>
 </main>
 </body>
 </html>
