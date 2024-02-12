@@ -19,8 +19,8 @@
 <aside>
   <nav>
     <ul>
-      <li><a href="#">Explorer la liste d'album</a></li>
-      <li><a href="mesFavoris.php">Mes favoris</a></li>
+      <li><a href="accueil.php">Explorer la liste d'album</a></li>
+      <li><a href="#">Mes favoris</a></li>
       <li><a href="#">Mon historique</a></li>
       <li><a href="monCompte.php">Mon Compte</a></li>
       <li id="bot1" ><a href="index.php">Déconnexion</a></li>
@@ -36,25 +36,25 @@
 
 <?php
 
-session_start();
 
 require_once 'Classes/Autoloader.php';
 require_once 'Classes/data/bd.php'; // Assurez-vous que ce fichier contient la définition de createBD()
 
 $dbFilename = 'bdd.sqlite3';
-if(!file_exists($dbFilename)){
+
+if (!file_exists($dbFilename)) {
     // La base de données n'existe pas, on peut la créer
     $db = new SQLite3($dbFilename);
 
     // Ajoutez ici la logique pour créer les tables et autres initialisations si nécessaire
     createBD();
-}
+    
     
     // Chargez les classes avec les espaces de noms
     // ...
     
 
-  
+  } 
   Autoloader::register();
   use Classes\bd\AlbumBD;
   use Classes\bd\ArtisteBD;
@@ -64,18 +64,20 @@ if(!file_exists($dbFilename)){
 
     $albums = \Classes\bd\AlbumBD::getAllAlbums();
     $artistes = \Classes\bd\ArtisteBD::getAllArtistes();
-    foreach ($artistes as $artiste){
-      //print_r($artiste->getNom());
+    $playlist  = \Classes\bd\PlaylistItemBD::getById($_SESSION['id']);
+    $result = array();
+    foreach ($playlist as $album_id){
+        $result[] = AlbumBD::getById($album_id);
     }
 ?>
-
+<!--  -->
 <div class="liste-artiste">
-    <?php foreach ($albums as $album) :
+    <?php 
+    foreach ($result as $album) :
     $debut = "fixtures/images/";
     $url ="";
     if($album->getUrlImage() != "" && $album->getUrlImage() != "img.jpg"){
       $url = $debut . $album->getUrlImage();
-      $url = str_replace("%","%25",$url);
 
     }
 
@@ -94,11 +96,6 @@ if(!file_exists($dbFilename)){
             <a href="album.php?album_id=<?php echo $album->getId(); ?>">  <h3 class="test-arrow"><span><?php echo $album->getTitre(); ?></span></h3> </a>
       
                 <a href="pageArtiste.php?artist_id=<?php echo $album->getArtiste(); ?>">  <p class="test-arrow"><?php echo $album->getArtiste(); ?></p></a>
-                <form action="ajouter_a_playlist.php" method="post" style="display: inline;">
-    <input type="hidden" name="album_id" value="<?php echo $album->getId(); ?>">
-    <button type="submit" class="heart-button">&#10084;</button>
-</form>
-
             </div>
         </div>
     <?php endforeach; ?>
