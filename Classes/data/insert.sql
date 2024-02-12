@@ -1,15 +1,15 @@
-INSERT INTO Utilisateurs (user_id, nom_utilisateur, mot_de_passe, email, image_url) VALUES
-(1, 'john_doe', 'mot_de_passe_secure', 'john.doe@example.com', null),
-(2, 'jane_smith', 'secure_password123', 'jane.smith@example.com', null),
-(3, 'bob_jones', 'strong_password', null, null),
-(4, 'alice_wonderland', 'another_secure_password', 'alice.wonderland@example.com', null),
-(5, 'samuel_lee', 'password123', 'samuel.lee@example.com', null),
-(6, 'emily_white', 'white123', 'emily.white@example.com', null),
-(7, 'david_miller', 'miller_pass', null, null),
-(8, 'lisa_jackson', 'secure_lisa', 'lisa.jackson@example.com', null),
-(9, 'alex_brown', 'brown_secure', 'alex.brown@example.com', null),
-(10, 'sarah_adams', 'adams123', 'sarah.adams@example.com', null),
-(11, 'i1','m1', 'i1', null);
+INSERT INTO Utilisateurs (user_id, nom_utilisateur, mot_de_passe, email, image_url,type_uti) VALUES
+(1, 'john_doe', 'mot_de_passe_secure', 'john.doe@example.com', null,1),
+(2, 'jane_smith', 'secure_password123', 'jane.smith@example.com', null,1),
+(3, 'bob_jones', 'strong_password', null, null,1),
+(4, 'alice_wonderland', 'another_secure_password', 'alice.wonderland@example.com', null,1),
+(5, 'samuel_lee', 'password123', 'samuel.lee@example.com', null,1),
+(6, 'emily_white', 'white123', 'emily.white@example.com', null,1),
+(7, 'david_miller', 'miller_pass', null, null,1),
+(8, 'lisa_jackson', 'secure_lisa', 'lisa.jackson@example.com', null,1),
+(9, 'alex_brown', 'brown_secure', 'alex.brown@example.com', null,1),
+(10, 'sarah_adams', 'adams123', 'sarah.adams@example.com', null,1),
+(11, 'i1','m1', 'i1', null,2);
 
 INSERT INTO Artistes (artist_id, nom, artist_name, bio, image_url) VALUES
 (40, 'Superdrag', 'Superdrag', 'Superdrag is an American alternative rock band from Knoxville, Tennessee, United States, consisting of John Davis (vocals, guitar), Brandon Fisher (guitar), Tom Pappas (bass), and Don Coffey Jr. (drums).', 'superdrag.jpg'),

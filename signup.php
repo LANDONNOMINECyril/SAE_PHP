@@ -10,9 +10,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $user = $_POST['identifiant'];
     $mdp = $_POST['mdp'];
     $email = $_POST['email'];
-    print_r($email);
-    print_r($user);
-    print_r($mdp);
 
     try {
         $bdd = new PDO($dsn, $user, $mdp);
@@ -29,11 +26,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->execute();
         $res = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($res==null){
-            $query="INSERT INTO Utilisateurs (nom_utilisateur, mot_de_passe, email) VALUES (:a, :b, :c)";
+            $type_uti = 1;
+            $query="INSERT INTO Utilisateurs (nom_utilisateur, mot_de_passe, email, type_uti) VALUES (:a, :b, :c, :d)";
             $stmt = $bdd->prepare($query);
             $stmt->bindParam(':a', $_POST['identifiant']);
             $stmt->bindParam(':b', $_POST['mdp']);
             $stmt->bindParam(':c', $_POST['email']);
+            $stmt->bindParam(':d', $type_uti);
             $stmt->execute();
             header("Location: inscription.php?res=valide");
             exit;

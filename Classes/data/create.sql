@@ -20,7 +20,8 @@ CREATE TABLE IF NOT EXISTS Utilisateurs (
     nom_utilisateur TEXT NOT NULL,
     mot_de_passe TEXT NOT NULL,
     email TEXT,
-    image_url TEXT
+    image_url TEXT,
+    type_uti INTEGER NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS Albums (
