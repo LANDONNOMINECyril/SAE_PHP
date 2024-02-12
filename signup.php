@@ -33,18 +33,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt = $bdd->prepare($query);
             $stmt->bindParam(':a', $_POST['identifiant']);
             $stmt->bindParam(':b', $_POST['mdp']);
-            $stmt->bindParam(':c', $_POST['mail']);
+            $stmt->bindParam(':c', $_POST['email']);
             $stmt->execute();
             header("Location: inscription.php?res=valide");
             exit;
             
         } else {
-            header("Location: inscription.php?res=identifiants_existants");
+            header("Location: inscription.php?res=identifiants_existants ");
         }
     }
     else{
         header("Location: inscription.php?res=identifiants_manquants");
-        exit;
     }
 }
-?>

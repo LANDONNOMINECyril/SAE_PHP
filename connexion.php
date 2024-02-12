@@ -27,9 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->execute();
         $res = $stmt->fetch(PDO::FETCH_ASSOC);
         // Vérifier si l'utilisateur existe et si le mot de passe est correct
-        if ($res==null) {
-            // Identifiants invalides, afficher un message d'erreur
-            
+        if ($res==null) {  
             header("Location: login.php?res=identifiants_invalides");
             exit;
 
