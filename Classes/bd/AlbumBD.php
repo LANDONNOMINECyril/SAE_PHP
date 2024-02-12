@@ -38,28 +38,43 @@ class AlbumBD
 }
 
     
-    public static function getAlbumsbyQuery($search_query): array{
-        try {
-            $pdo = new PDO('sqlite:bdd.sqlite3');
-            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+public static function getAlbumsbyQuery($search_query): array {
+    try {
+        $pdo = new PDO('sqlite:bdd.sqlite3');
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-            // Utilisation de prepared statements pour éviter les injections SQL
-            $stmt = $pdo->prepare("SELECT * FROM Albums WHERE titre LIKE :search_query");
-            $stmt->bindValue(':search_query', '%' . $search_query . '%', PDO::PARAM_STR);
-            $stmt->execute();
+        // Première requête pour rechercher par titre
+        $stmt = $pdo->prepare("SELECT * FROM Albums WHERE titre LIKE :search_query");
+        $stmt->bindValue(':search_query', '%' . $search_query . '%', PDO::PARAM_STR);
+        $stmt->execute();
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            // Récupération des résultats
-            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        // Deuxième requête pour rechercher par genre
+        $stmt = $pdo->prepare("SELECT * FROM Albums NATURAL JOIN Types_Albums WHERE nom_genre LIKE :search_query");
+        $stmt->bindValue(':search_query', '%' . $search_query . '%', PDO::PARAM_STR);
+        $stmt->execute();
+        $result2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            // Fermeture de la connexion
-            $pdo = null;
+        // Requête pour rechercher par année
+        $stmt = $pdo->prepare("SELECT * FROM Albums WHERE annee LIKE :search_query");
+        $stmt->bindValue(':search_query', '%' . $search_query . '%', PDO::PARAM_STR);
+        $stmt->execute();
+        $result4 = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            return self::createAlbumPhp($result);
-        } catch (PDOException $e) {
-            echo "Error !: " . $e->getMessage() . "<br/>";
-            die();
-        }
+        // Fusion des résultats
+        $merged_results = array_merge($result, $result2, $result3, $result4);
+
+        // Fermeture de la connexion
+        $pdo = null;
+
+        // Création des objets Album à partir des résultats fusionnés
+        return self::createAlbumPhp($merged_results);
+    } catch (PDOException $e) {
+        echo "Error !: " . $e->getMessage() . "<br/>";
+        die();
     }
+}
+
 
     public static function getAllAlbums(): array
     {
