@@ -14,32 +14,68 @@ class AlbumBD
 {
 
     public static function createAlbumPhp($result): array|Album
-    {
-        $albums = array();
-        while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-            $album = new Album();
-            $album->setId(intval($row['album_id']));
-            $album->setTitre($row['titre']);
-            $album->setArtiste($row['artist_id']);
-            $album->setAnnee(intval($row['annee']));
-            //$album->setGenre($row['genre']);
-    
-            if (isset($row['image_url'])) {
-                $album->setUrlImage($row['image_url']);
-            }
-    
-            $albums[] = $album;
-            //print_r($albums);
+{
+    $albums = array();
+    foreach ($result as $row) {
+        $album = new Album();
+        $album->setId(intval($row['album_id']));
+        $album->setTitre($row['titre']);
+        $album->setArtiste($row['artist_id']);
+        $album->setAnnee(intval($row['annee']));
+        
+        if (isset($row['image_url'])) {
+            $album->setUrlImage($row['image_url']);
         }
-    
-        if (count($albums) === 1) {
-            return $albums[0]; // Retourne l'objet Album si un seul élément
-        } else {
-            return $albums; // Retourne le tableau d'objets Album si plusieurs éléments
-        }
+        
+        $albums[] = $album;
     }
+
+    if (count($albums) === 1) {
+        return $albums[0]; // Retourne l'objet Album si un seul élément
+    } else {
+        return $albums; // Retourne le tableau d'objets Album si plusieurs éléments
+    }
+}
+
     
-    
+public static function getAlbumsbyQuery($search_query): array {
+    try {
+        $pdo = new PDO('sqlite:bdd.sqlite3');
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        // Première requête pour rechercher par titre
+        $stmt = $pdo->prepare("SELECT * FROM Albums WHERE titre LIKE :search_query");
+        $stmt->bindValue(':search_query', '%' . $search_query . '%', PDO::PARAM_STR);
+        $stmt->execute();
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Deuxième requête pour rechercher par genre
+        $stmt = $pdo->prepare("SELECT * FROM Albums NATURAL JOIN Types_Albums WHERE nom_genre LIKE :search_query");
+        $stmt->bindValue(':search_query', '%' . $search_query . '%', PDO::PARAM_STR);
+        $stmt->execute();
+        $result2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Requête pour rechercher par année
+        $stmt = $pdo->prepare("SELECT * FROM Albums WHERE annee LIKE :search_query");
+        $stmt->bindValue(':search_query', '%' . $search_query . '%', PDO::PARAM_STR);
+        $stmt->execute();
+        $result4 = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Fusion des résultats
+        $merged_results = array_merge($result, $result2, $result3, $result4);
+
+        // Fermeture de la connexion
+        $pdo = null;
+
+        // Création des objets Album à partir des résultats fusionnés
+        return self::createAlbumPhp($merged_results);
+    } catch (PDOException $e) {
+        echo "Error !: " . $e->getMessage() . "<br/>";
+        die();
+    }
+}
+
+
     public static function getAllAlbums(): array
     {
         try {

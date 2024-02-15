@@ -5,7 +5,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Votre Page</title>
-  <!-- Inclure Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="index.css">
   <link rel ="stylesheet" href="static/album.css">
@@ -13,8 +12,12 @@
 <body>
 
 <header>
-    <h3><input type="text" placeholder="Rechercher un album..."></h3>
+    <form action="" method="GET">
+        <input type="text" name="search_query" placeholder="Rechercher un album...">
+        <button type="submit">Rechercher</button>
+    </form>
 </header>
+
 
 <aside>
   <nav>
@@ -42,15 +45,20 @@ require_once 'Classes/Autoloader.php';
 require_once 'Classes/data/bd.php'; // Assurez-vous que ce fichier contient la définition de createBD()
 
 $dbFilename = 'bdd.sqlite3';
-if(!file_exists($dbFilename)){
+
+if (!file_exists($dbFilename)) {
     // La base de données n'existe pas, on peut la créer
     $db = new SQLite3($dbFilename);
 
     // Ajoutez ici la logique pour créer les tables et autres initialisations si nécessaire
     createBD();
-}
+    
+    
+    // Chargez les classes avec les espaces de noms
+    // ...
+    
 
-  
+  } 
   Autoloader::register();
   use Classes\bd\AlbumBD;
   use Classes\bd\ArtisteBD;
@@ -58,7 +66,15 @@ if(!file_exists($dbFilename)){
   use Classes\bd\PlaylistItemBD;
   use Symfony\Component\Yaml\Yaml;
 
-    $albums = \Classes\bd\AlbumBD::getAllAlbums();
+  if(isset($_GET['search_query']) && $_GET['search_query'] !== '') {
+      $search_query = $_GET['search_query'];
+      $albums = \Classes\bd\AlbumBD::getAlbumsbyQuery($search_query);
+  } else {
+      $albums = \Classes\bd\AlbumBD::getAllAlbums();
+  }
+    
+
+    
     $artistes = \Classes\bd\ArtisteBD::getAllArtistes();
     foreach ($artistes as $artiste){
       //print_r($artiste->getNom());
