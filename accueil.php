@@ -23,6 +23,15 @@
             <li><a href="monCompte.php">Mon Compte</a></li>
             <li id="bot1"><a href="#">Déconnexion</a></li>
             <li id="bot2"><a href="#">Quitter l'application</a></li>
+            <?php
+            session_start();
+            $admin = $_SESSION['admin'];
+
+            if ($admin) {
+                echo "<li><a href='adminAlbum.php'>Ajouter un album</a></li>";
+                echo "<li><a href='adminArtist.php'>Ajouter un artiste</a></li>";
+            }
+            ?>
         </ul>
     </nav>
 </aside>
@@ -33,8 +42,6 @@
     <p></p>
 
     <?php
-
-    session_start();
 
     require_once 'Classes/Autoloader.php';
     require_once 'Classes/data/bd.php'; // Assurez-vous que ce fichier contient la définition de createBD()
@@ -61,7 +68,6 @@
     use Symfony\Component\Yaml\Yaml;
 
     $user = $_SESSION['user'];
-    $admin = $_SESSION['admin'];
 
     $albums = \Classes\bd\AlbumBD::getAllAlbums();
     $artistes = \Classes\bd\ArtisteBD::getAllArtistes();
@@ -98,7 +104,7 @@
                                 class="test-arrow"><?php echo $album->getArtiste(); ?></p></a>
                     <?php
                     if ($admin) {
-                        echo "<a href='modifierAlbum.php?album_id=" . $album->getId() . "'><p class='test-arrow'>Modifier</p></a>";
+                        echo "<a href='adminAlbum.php?type=modif&album_id=" . $album->getId() . "'><p class='test-arrow'>Modifier</p></a>";
                         echo "<a onclick=\"showPopupDel('" . $album->getTitre() . "')\"><p class='test-arrow'>Supprimer</p></a>";
                     }
                     ?>

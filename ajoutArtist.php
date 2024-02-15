@@ -20,7 +20,6 @@
             <li><a href="#">Mon Compte</a></li>
             <li id="bot1"><a href="#">Déconnexion</a></li>
             <li id="bot2"><a href="#">Quitter l'application</a></li>
-
         </ul>
     </nav>
 </aside>
@@ -61,7 +60,7 @@
     }
 
     ?>
-    <form action="accueil.php" method="post">
+    <form action="ajoutArtist.php" method="post">
         <div class="mb-3">
             <label for="nom" class="form-label">Nom</label>
             <input type="text" class="form-control" id="nom" name="nom">

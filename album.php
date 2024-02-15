@@ -45,7 +45,7 @@
     echo "<h2>Genre : " . $albums->getGenre() . "</h2>";
     echo "<h2>Date de sortie : " . $albums->getAnnee() . "</h2>";
     if ($admin) {
-        echo "<a href='modifierAlbum.php?album_id=" . $albums->getId() . "'>Modifier</a>";
+        echo "<a href='adminAlbum.php?type=modif&album_id=" . $albums->getId() . "'>Modifier</a>";
     }
     ?>
 </main>
