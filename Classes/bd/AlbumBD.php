@@ -13,7 +13,8 @@ date_default_timezone_set('Europe/Paris');
 class AlbumBD
 {
 
-    public static function createAlbumPhp($result): array {
+    public static function createAlbumPhp($result): array | Album
+    {
         $albums = array();
         foreach ($result as $row) {
             $album = new Album();
@@ -27,6 +28,9 @@ class AlbumBD
             }
             
             $albums[] = $album;
+        }
+        if(count($albums) === 1) {
+            return $albums[0];
         }
         return $albums;
     }
