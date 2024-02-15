@@ -14,11 +14,11 @@
 <aside>
   <nav>
     <ul>
-      <li><a href="#">Explorer la liste d'album</a></li>
-      <li><a href="#">Mes favoris</a></li>        
+      <li><a href="accueil.php">Explorer la liste d'album</a></li>
+      <li><a href="mesFavoris.php">Mes favoris</a></li>        
       <li><a href="#">Mon historique</a></li>
       <li><a href="#">Mon Compte</a></li>
-      <li id="bot1" ><a href="#">Déconnexion</a></li>
+      <li id="bot1" ><a href="index.php">Déconnexion</a></li>
       <li id="bot2" ><a href="#">Quitter l'application</a></li>
 
     </ul>
