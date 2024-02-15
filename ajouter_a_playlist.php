@@ -15,6 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Appelez la fonction createPlaylistItemPhp avec l'ID de l'album
     $result = PlaylistItemBD::createPlaylistItemPhp($albumId);
+    header("Location: accueil.php");
 
     exit();
 }

@@ -31,7 +31,7 @@
 
 <main>
   <!-- Contenu principal de votre page -->
-  <h2 class="titre-page">Contenu principal</h2>
+  <h2 class="titre-page">Les albums</h2>
   <p></p>
 
 <?php
@@ -49,10 +49,6 @@ if(!file_exists($dbFilename)){
     // Ajoutez ici la logique pour créer les tables et autres initialisations si nécessaire
     createBD();
 }
-    
-    // Chargez les classes avec les espaces de noms
-    // ...
-    
 
   
   Autoloader::register();
@@ -104,10 +100,8 @@ if(!file_exists($dbFilename)){
     <?php endforeach; ?>
 </div>
 </main>
-
 <!-- Inclure Bootstrap JS (jQuery et Popper.js doivent être inclus avant) -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
 </body>
 </html>
