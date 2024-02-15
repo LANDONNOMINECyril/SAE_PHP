@@ -187,4 +187,22 @@ public static function getAlbumsbyQuery($search_query): array {
             die();
         }
     }
+
+    public static function ajouterAlbum($nalbum): void
+    {
+        try{
+            $pdo = new PDO('sqlite:bdd.sqlite3');
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $stmt = $pdo->prepare('INSERT INTO Albums (titre, artist_id, annee, image_url) VALUES (:titre, :artiste, :annee, :image)');
+            $stmt->bindParam(':titre', $nalbum->getTitre());
+            $stmt->bindParam(':artiste', $nalbum->getArtisteId());
+            $stmt->bindParam(':annee', $nalbum->getAnnee());
+            $stmt->bindParam(':image', $nalbum->getUrlImage());
+            $stmt->execute();
+            $pdo = null;
+        } catch (PDOException $e) {
+            echo "Error !: " . $e->getMessage() . "<br/>";
+            die();
+        }
+    }
 }
