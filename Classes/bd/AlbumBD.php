@@ -13,29 +13,24 @@ date_default_timezone_set('Europe/Paris');
 class AlbumBD
 {
 
-    public static function createAlbumPhp($result): array|Album
-{
-    $albums = array();
-    foreach ($result as $row) {
-        $album = new Album();
-        $album->setId(intval($row['album_id']));
-        $album->setTitre($row['titre']);
-        $album->setArtiste($row['artist_id']);
-        $album->setAnnee(intval($row['annee']));
-        
-        if (isset($row['image_url'])) {
-            $album->setUrlImage($row['image_url']);
+    public static function createAlbumPhp($result): array {
+        $albums = array();
+        foreach ($result as $row) {
+            $album = new Album();
+            $album->setId(intval($row['album_id']));
+            $album->setTitre($row['titre']);
+            $album->setArtiste($row['artist_id']);
+            $album->setAnnee(intval($row['annee']));
+            
+            if (isset($row['image_url'])) {
+                $album->setUrlImage($row['image_url']);
+            }
+            
+            $albums[] = $album;
         }
-        
-        $albums[] = $album;
-    }
-
-    if (count($albums) === 1) {
-        return $albums[0];
-    } else {
         return $albums;
     }
-}
+    
 
     
 public static function getAlbumsbyQuery($search_query): array {
@@ -61,8 +56,19 @@ public static function getAlbumsbyQuery($search_query): array {
         $stmt->execute();
         $result4 = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+        // Requête pour rechercher par artiste
+        $stmt = $pdo->prepare("SELECT artist_id FROM Artistes WHERE nom LIKE :search_query");
+        $stmt->bindValue(':search_query', '%' . $search_query . '%', PDO::PARAM_STR);
+        $stmt->execute();
+        $resultintermediaire = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt = $pdo->prepare("SELECT * FROM Albums WHERE artist_id = :id");
+        $stmt->bindValue(':id', $resultintermediaire[0]["artist_id"], PDO::PARAM_STR);
+        $stmt->execute();
+        $result3 = $stmt->fetchAll(PDO::FETCH_ASSOC); 
+
+
         // Fusion des résultats
-        $merged_results = array_merge($result, $result2, $result4);
+        $merged_results = array_merge($result, $result2, $result3, $result4);
 
         // Fermeture de la connexion
         $pdo = null;
