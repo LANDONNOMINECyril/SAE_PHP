@@ -37,6 +37,11 @@ class Album
         $this->titre = $titre;
     }
 
+    public function getArtisteId(): int
+    {
+        return $this->artiste;
+    }
+
     public function getArtiste(): string
     {
         if(is_string(ArtisteBD::getById($this->artiste))){
