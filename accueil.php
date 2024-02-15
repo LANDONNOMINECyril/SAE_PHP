@@ -94,7 +94,7 @@
                     <a href="album.php?album_id=<?php echo $album->getId(); ?>"><h3 class="test-arrow">
                             <span><?php echo $album->getTitre(); ?></span></h3></a>
 
-                    <a href="pageArtiste.php?artist_id=<?php echo $album->getArtiste(); ?>"><p
+                    <a href="pageArtiste.php?artist_id=<?php echo $album->getArtisteId(); ?>"><p
                                 class="test-arrow"><?php echo $album->getArtiste(); ?></p></a>
                     <?php
                     if ($admin) {

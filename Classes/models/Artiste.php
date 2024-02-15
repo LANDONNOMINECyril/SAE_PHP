@@ -8,7 +8,7 @@ class Artiste
     private string $nom;
     private string $surnom;
     private string $bio;
-    private string $urlImage;
+    private string $urlImage = "";
     private array|Album $albums;
 
     public function getId(): int
