@@ -66,7 +66,7 @@ class Album
         $listeGenre = "";
         if(is_array(TypeAlbumBD::getGenresByAlbumId($this->getId()))){
             foreach(TypeAlbumBD::getGenresByAlbumId($this->getId()) as $genre){
-                $listeGenre = $listeGenre . " , " . $genre->getNomGenre();
+                $listeGenre = $listeGenre . $genre->getNomGenre() . " ,";
             }
             return $listeGenre;
         }

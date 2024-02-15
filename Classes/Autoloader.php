@@ -15,6 +15,7 @@
             // Remplace les antislashes "\" par des slashes "/" dans le nom de la classe
             $path = str_replace('\\', '/', $fqcn);
             
+            
             // Charge le fichier de la classe en utilisant le chemin calculé
             require  $path . '.php';
         }
