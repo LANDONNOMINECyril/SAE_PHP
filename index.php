@@ -3,7 +3,7 @@
     Autoloader::register();
     $dbFilename = 'bdd.sqlite3';
 
-if (!file_exists($dbFilename)) {
+if (file_exists($dbFilename)) {
     // La base de données n'existe pas, on peut la créer
     require_once 'Classes/data/bd.php';
     createBD();

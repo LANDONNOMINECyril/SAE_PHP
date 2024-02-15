@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (!empty($_POST['identifiant']) && !empty($_POST['mdp'])) {
         // Requête pour vérifier les identifiants dans la base de données
-        $query = "SELECT type_uti FROM Utilisateurs WHERE nom_utilisateur = :identifiant and mot_de_passe = :mdp";
+        $query = "SELECT type_uti ,user_id FROM Utilisateurs WHERE nom_utilisateur = :identifiant and mot_de_passe = :mdp";
         $stmt = $bdd->prepare($query);
         $stmt->bindParam(':identifiant', $user);
         $stmt->bindParam(':mdp', $mdp);
@@ -32,16 +32,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit;
 
         } else {
+            $_SESSION['id'] = $res['user_id'];
             print_r($res);
             if($res['type_uti'] == 1){
-                // Authentification réussie, rediriger vers la page d'accueil par exemple
-                header("Location: accueil.php");
-                exit;       
-            }
-            else{
-                header("Location: accueil_admin.php");
-                exit;
-            }
+            //     // Authentification réussie, rediriger vers la page d'accueil par exemple
+                 header("Location: accueil.php");
+                 exit;       
+             }
+             else{
+                 header("Location: accueil_admin.php");
+                 exit;
+             }
         }
     } else {
         // Champs manquants, afficher un message d'erreur
