@@ -53,28 +53,14 @@ class ArtisteBD
         }
     }
 
-    public static function getById($id): string|Artiste
+    public static function getById($id): artiste
     {
         try {
             $pdo = new PDO('sqlite:bdd.sqlite3');
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-            $stmt = $pdo->prepare('SELECT nom FROM Artistes WHERE artist_id = :id');
-            $stmt->bindParam(':id', $id);
-            $stmt->execute();
-
-            $artiste = $stmt->fetch(PDO::FETCH_ASSOC);
+            $result = $pdo->query('SELECT * FROM Artistes WHERE artist_id = ' . $id);
             $pdo = null;
-
-            if ($artiste) {
-                if (array_key_exists('nom', $artiste)) {
-                    return $artiste['nom'];
-                } else {
-                    return "Nom d'artiste manquant dans le résultat de la requête";
-                }
-            } else {
-                return "Artiste non trouvé";
-            }
+            return self::createArtistePhp($result);
         } catch (PDOException $e) {
             echo "Error !: " . $e->getMessage() . "<br/>";
             die();
