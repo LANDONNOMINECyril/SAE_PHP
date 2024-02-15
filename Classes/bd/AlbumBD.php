@@ -110,11 +110,31 @@ class AlbumBD
         }
     }
 
-    public static function deleteAlbum($title){
+    public static function deleteAlbum($title): void
+    {
         try {
             $pdo = new PDO('sqlite:bdd.sqlite3');
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $pdo->exec('DELETE FROM Albums WHERE titre = "' . $title . '"');
+            $pdo = null;
+        } catch (PDOException $e) {
+            echo "Error !: " . $e->getMessage() . "<br/>";
+            die();
+        }
+    }
+
+    public static function updateAlbum($album): void
+    {
+        try{
+            $pdo = new PDO('sqlite:bdd.sqlite3');
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $stmt = $pdo->prepare('UPDATE Albums SET titre = :titre, artist_id = :artiste, annee = :annee, image_url = :image WHERE album_id = :id');
+            $stmt->bindParam(':titre', $album->getTitre());
+            $stmt->bindParam(':artiste', $album->getArtisteId());
+            $stmt->bindParam(':annee', $album->getAnnee());
+            $stmt->bindParam(':image', $album->getUrlImage());
+            $stmt->bindParam(':id', $album->getId());
+            $stmt->execute();
             $pdo = null;
         } catch (PDOException $e) {
             echo "Error !: " . $e->getMessage() . "<br/>";

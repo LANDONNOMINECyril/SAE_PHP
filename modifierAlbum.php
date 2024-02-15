@@ -29,7 +29,11 @@
     <?php
     session_start();
 
+    use Classes\bd\AlbumBD;
     use Classes\bd\ArtisteBD;
+    use Classes\models\Album;
+    use Classes\models\Artiste;
+
 
     $admin = $_SESSION['admin'];
 
@@ -39,10 +43,64 @@
     $id = $_GET['album_id'];
     $albums = \Classes\bd\AlbumBD::getById($id);
 
+    /**
+     * @param Album $nalbum
+     * @return void
+     */
+    function extracted(Album|Artiste $nalbum): void
+    {
+        $tmp_name = $_FILES['image']['tmp_name'];
+        // basename() may prevent filesystem traversal attacks;
+        // further validation/sanitation of the filename may be appropriate
+        $name = basename($_FILES['image']['name']);
+        $target_dir = "fixtures/images/";
+        $target_file = $target_dir . $name;
+
+        // Move the uploaded file to the target directory
+        if (move_uploaded_file($tmp_name, $target_file)) {
+            echo "The file " . htmlspecialchars(basename($_FILES["image"]["name"])) . " has been uploaded.";
+            $nalbum->setUrlImage($name);
+        } else {
+            echo "Failed to upload image.";
+        }
+    }
+
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        // Retrieve form data
+        $titre = $_POST['titre'];
+        $artiste = $_POST['artiste'];
+        $annee = $_POST['annee'];
+        $genre = $_POST['genre'];
+//        $urlImage = $_POST['image'];
+
+//        $artiste = ArtisteBD::getIdName($artiste);
+        echo $artiste;
+
+        // Create an Album object
+        $nalbum = new Album();
+        $nalbum->setId($id);
+        $nalbum->setTitre($titre);
+        $nalbum->setArtiste($artiste);
+        $nalbum->setAnnee($annee);
+        $nalbum->setGenre($genre);
+
+
+        if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
+            extracted($nalbum);
+        }else{
+            $nalbum->setUrlImage($albums->getUrlImage());
+        }
+        AlbumBD::updateAlbum($nalbum);
+
+        header("Location: album.php?album_id=$id");
+        exit();
+    }
+
     // Fetch all the artists
     $artists = \Classes\bd\ArtisteBD::getAllArtistes();
     ?>
-    <form action="modifierAlbum.php" method="post">
+    <form action=<?php echo "modifierAlbum.php?album_id=$id"?> method="post" enctype="multipart/form-data">
         <div class="mb-3">
             <label for="titre" class="form-label">Titre</label>
             <input type="text" class="form-control" id="titre" name="titre" value="<?php echo $albums->getTitre(); ?>">
@@ -71,6 +129,11 @@
         <div class="mb-3">
             <label for="genre" class="form-label">Genre</label>
             <input type="text" class="form-control" id="genre" name="genre" value="<?php echo $albums->getGenre(); ?>">
+        </div>
+        <div class="mb-3">
+            <label for="image" class="form-label">Image</label>
+            <img src="fixtures/images/<?php echo $albums->getUrlImage(); ?>" alt="Current Album Image" style="width: 100px; height: 100px;">
+            <input type="file" class="form-control" id="image" name="image" value="<?php echo $albums->getUrlImage(); ?>">
         </div>
         <button type="submit" class="btn btn-primary">Modifier</button>
     </form>

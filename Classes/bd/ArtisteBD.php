@@ -81,5 +81,52 @@ class ArtisteBD
         }
     }
 
+    public static function getIdName($name) : int
+    {
+        try {
+            $pdo = new PDO('sqlite:bdd.sqlite3');
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+            $stmt = $pdo->prepare('SELECT artist_id FROM Artistes WHERE nom = :name');
+            $stmt->bindParam(':name', $name);
+            $stmt->execute();
+
+            $artiste = $stmt->fetch(PDO::FETCH_ASSOC);
+            $pdo = null;
+
+            if ($artiste) {
+                if (array_key_exists('artist_id', $artiste)) {
+                    return $artiste['artist_id'];
+                } else {
+                    return 0;
+                }
+            } else {
+                return 0;
+            }
+        } catch (PDOException $e) {
+            echo "Error !: " . $e->getMessage() . "<br/>";
+            die();
+        }
+    }
+
+    public static function ajouterArtiste($artiste): void
+    {
+        try {
+            $pdo = new PDO('sqlite:bdd.sqlite3');
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+            $stmt = $pdo->prepare('INSERT INTO Artistes (nom, artist_name, bio, image_url) VALUES (:nom, :surnom, :bio, :image)');
+            $stmt->bindParam(':nom', $artiste->getNom());
+            $stmt->bindParam(':surnom', $artiste->getSurnom());
+            $stmt->bindParam(':bio', $artiste->getBio());
+            $stmt->bindParam(':image', $artiste->getUrlImage());
+            $stmt->execute();
+
+            $pdo = null;
+        } catch (PDOException $e) {
+            echo "Error !: " . $e->getMessage() . "<br/>";
+            die();
+        }
+    }
 
 }
