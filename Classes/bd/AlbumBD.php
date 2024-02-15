@@ -31,9 +31,9 @@ class AlbumBD
     }
 
     if (count($albums) === 1) {
-        return $albums[0]; // Retourne l'objet Album si un seul élément
+        return $albums[0];
     } else {
-        return $albums; // Retourne le tableau d'objets Album si plusieurs éléments
+        return $albums;
     }
 }
 
@@ -62,7 +62,7 @@ public static function getAlbumsbyQuery($search_query): array {
         $result4 = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         // Fusion des résultats
-        $merged_results = array_merge($result, $result2, $result3, $result4);
+        $merged_results = array_merge($result, $result2, $result4);
 
         // Fermeture de la connexion
         $pdo = null;
