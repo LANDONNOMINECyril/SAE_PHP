@@ -2,14 +2,27 @@
 $res = $_GET["res"];
 ?>
 
+
 <!DOCTYPE html>
-<link rel="stylesheet" href="inscription.css">
-<html lang="fr">
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>Application spotify</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Votre Page</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="index.css">
+  <link rel ="stylesheet" href="static/album.css">
+  <link rel = "stylesheet" href="login.css">
 </head>
 <body>
+
+<header>
+    <form action="" method="GET">
+        <h1>S'inscrire</h1>
+    </form>
+</header>
+
+
 <main>
     <?php if($res != "valide"){?>
     <div id="centre">
@@ -37,5 +50,8 @@ $res = $_GET["res"];
         <button type="button" class="button" onclick="window.location.href='login.php?res=debut'">Se connecter</button>
     <?php }?>
 </main>
+<!-- Inclure Bootstrap JS (jQuery et Popper.js doivent être inclus avant) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
