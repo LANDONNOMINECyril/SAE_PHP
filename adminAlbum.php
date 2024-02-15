@@ -40,8 +40,14 @@
     require "Classes/Autoloader.php";
     Autoloader::register();
 
-    $id = $_GET['album_id'];
-    $albums = \Classes\bd\AlbumBD::getById($id);
+    $modif = false;
+
+    if ($_GET['type'] === 'modif') {
+        $id = $_GET['album_id'];
+        $albums = \Classes\bd\AlbumBD::getById($id);
+        $modif = true;
+    }
+
 
     /**
      * @param Album $nalbum
@@ -79,7 +85,9 @@
 
         // Create an Album object
         $nalbum = new Album();
-        $nalbum->setId($id);
+        if($modif){
+            $nalbum->setId($id);
+        }
         $nalbum->setTitre($titre);
         $nalbum->setArtiste($artiste);
         $nalbum->setAnnee($annee);
@@ -88,31 +96,49 @@
 
         if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
             extracted($nalbum);
-        }else{
+        } else {
             $nalbum->setUrlImage($albums->getUrlImage());
         }
-        AlbumBD::updateAlbum($nalbum);
 
-        header("Location: album.php?album_id=$id");
+        if($modif){
+            AlbumBD::updateAlbum($nalbum);
+            header("Location: album.php?album_id=$id");
+        }else{
+            AlbumBD::ajouterAlbum($nalbum);
+            header("Location: accueil.php");
+        }
         exit();
     }
 
     // Fetch all the artists
     $artists = \Classes\bd\ArtisteBD::getAllArtistes();
+
+    if ($modif) {
+        echo "<form action=\"adminAlbum.php?type=modif&album_id=$id\" method=\"post\" enctype=\"multipart/form-data\">";
+    }else{
+        echo "<form action=\"adminAlbum.php\" method=\"post\" enctype=\"multipart/form-data\">";
+    }
+
     ?>
-    <form action=<?php echo "modifierAlbum.php?album_id=$id"?> method="post" enctype="multipart/form-data">
         <div class="mb-3">
             <label for="titre" class="form-label">Titre</label>
-            <input type="text" class="form-control" id="titre" name="titre" value="<?php echo $albums->getTitre(); ?>">
+            <input type="text" class="form-control" id="titre" name="titre" <?php if ($modif) {
+                echo "value='{$albums->getTitre()}'";
+            } ?>>
         </div>
         <div class="mb-3">
             <label for="artiste" class="form-label">Artiste</label>
             <select name="artiste" id="artiste" class="form-control">
                 <?php
                 foreach ($artists as $artist) {
-                    if ($artist->getId() === $albums->getArtiste()) {
-                        echo "<option value=\"{$artist->getId()}\" selected>{$artist->getNom()}</option>";
-                    } else {
+                    if ($modif) {
+                        if ($artist->getId() === $albums->getArtiste()) {
+                            echo "<option value=\"{$artist->getId()}\" selected>{$artist->getNom()}</option>";
+                        } else {
+                            // Create an option for each artist
+                            echo "<option value=\"{$artist->getId()}\">{$artist->getNom()}</option>";
+                        }
+                    }else {
                         // Create an option for each artist
                         echo "<option value=\"{$artist->getId()}\">{$artist->getNom()}</option>";
                     }
@@ -124,18 +150,34 @@
         </div>
         <div class="mb-3">
             <label for="annee" class="form-label">Année</label>
-            <input type="text" class="form-control" id="annee" name="annee" value="<?php echo $albums->getAnnee(); ?>">
+            <input type="text" class="form-control" id="annee" name="annee" <?php if ($modif) {
+                echo "value='{$albums->getAnnee()}'";
+            } ?>">
         </div>
         <div class="mb-3">
             <label for="genre" class="form-label">Genre</label>
-            <input type="text" class="form-control" id="genre" name="genre" value="<?php echo $albums->getGenre(); ?>">
+            <input type="text" class="form-control" id="genre" name="genre" <?php if ($modif) {
+                echo "value='{$albums->getGenre()}'";
+            } ?>">
         </div>
         <div class="mb-3">
             <label for="image" class="form-label">Image</label>
-            <img src="fixtures/images/<?php echo $albums->getUrlImage(); ?>" alt="Current Album Image" style="width: 100px; height: 100px;">
-            <input type="file" class="form-control" id="image" name="image" value="<?php echo $albums->getUrlImage(); ?>">
+            <img src="fixtures/images/<?php if ($modif) {
+                echo $albums->getUrlImage();
+            } else {
+                echo "default.jpg";
+            } ?>" alt="Current Album Image" style="width: 100px; height: 100px;">
+            <input type="file" class="form-control" id="image" name="image">
         </div>
-        <button type="submit" class="btn btn-primary">Modifier</button>
+        <?php
+         if($modif){
+             echo "<button type=\"submit\" class=\"btn btn-primary\">Modifier</button>";
+         }else{
+                echo "<button type=\"submit\" class=\"btn btn-primary\">Ajouter</button>";
+         }
+
+
+        ?>
     </form>
 
 
