@@ -67,7 +67,7 @@ class ArtisteBD
         }
     }
 
-    public static function getIdName($name) : int
+    public static function getIdName($name): int
     {
         try {
             $pdo = new PDO('sqlite:bdd.sqlite3');
@@ -115,4 +115,39 @@ class ArtisteBD
         }
     }
 
+    public static function modifierArtiste($artiste): void
+    {
+        try {
+            $pdo = new PDO('sqlite:bdd.sqlite3');
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+            $stmt = $pdo->prepare('UPDATE Artistes SET nom = :nom, artist_name = :surnom, bio = :bio, image_url = :image WHERE artist_id = :id');
+            $stmt->bindParam(':nom', $artiste->getNom());
+            $stmt->bindParam(':surnom', $artiste->getSurnom());
+            $stmt->bindParam(':bio', $artiste->getBio());
+            $stmt->bindParam(':image', $artiste->getUrlImage());
+            $stmt->bindParam(':id', $artiste->getId());
+            $stmt->execute();
+
+            $pdo = null;
+        } catch (PDOException $e) {
+            echo "Error !: " . $e->getMessage() . "<br/>";
+            die();
+        }
+    }
+
+
+    public static function deleteArtiste($name): void
+    {
+        try {
+            $pdo = new PDO('sqlite:bdd.sqlite3');
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $pdo->exec('DELETE FROM Artistes WHERE nom = "' . $name . '"');
+            $pdo = null;
+        } catch (PDOException $e) {
+            echo "Error !: " . $e->getMessage() . "<br/>";
+            die();
+        }
+
+    }
 }

@@ -32,7 +32,7 @@
     use Classes\bd\AlbumBD;
     use Classes\bd\ArtisteBD;
     use Classes\models\Album;
-    use Classes\models\Artiste;
+    require_once 'Classes\Action\getImage.php';
 
 
     $admin = $_SESSION['admin'];
@@ -53,24 +53,6 @@
      * @param Album $nalbum
      * @return void
      */
-    function extracted(Album|Artiste $nalbum): void
-    {
-        $tmp_name = $_FILES['image']['tmp_name'];
-        // basename() may prevent filesystem traversal attacks;
-        // further validation/sanitation of the filename may be appropriate
-        $name = basename($_FILES['image']['name']);
-        $target_dir = "fixtures/images/";
-        $target_file = $target_dir . $name;
-
-        // Move the uploaded file to the target directory
-        if (move_uploaded_file($tmp_name, $target_file)) {
-            echo "The file " . htmlspecialchars(basename($_FILES["image"]["name"])) . " has been uploaded.";
-            $nalbum->setUrlImage($name);
-        } else {
-            echo "Failed to upload image.";
-        }
-    }
-
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Retrieve form data
@@ -110,6 +92,12 @@
         exit();
     }
 
+    if($modif) {
+        echo "<h1>Modifier un album</h1>";
+    } else {
+        echo "<h1>Ajouter un album</h1>";
+    }
+
     // Fetch all the artists
     $artists = \Classes\bd\ArtisteBD::getAllArtistes();
 
@@ -145,7 +133,7 @@
                 }
                 ?>
             </select>
-            <a href="ajoutArtist.php">Ajouter un artiste ...</a>
+            <a href="adminArtist.php">Ajouter un artiste ...</a>
 
         </div>
         <div class="mb-3">
