@@ -28,6 +28,10 @@
 
 <main>
     <?php
+    session_start();
+
+    $admin = $_SESSION['admin'];
+
     require "Classes/Autoloader.php";
     Autoloader::register();
     use Classes\bd\AlbumBD;
@@ -67,10 +71,17 @@
         \Classes\bd\NoteAlbumBD::ajouterNote($notation, intval($id));
         header("Location: album.php?album_id=".$id);
     }
+
+    if ($admin) {
+        echo "<a href='modifierAlbum.php?album_id=" . $album->getId() . "'>Modifier</a>";
+}
 ?>
+?>
+
 
 </main>
 
+<script type="text/javascript" src = "static/popup.js"></script>
 <!-- Inclure Bootstrap JS (jQuery et Popper.js doivent être inclus avant) -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
