@@ -30,17 +30,45 @@
     <?php
     require "Classes/Autoloader.php";
     Autoloader::register();
-    Autoloader::autoload("bd\AlbumBD");
+    use Classes\bd\AlbumBD;
+    use Classes\bd\NoteAlbumBD;
     use Symfony\Component\Yaml\Yaml;
 
     $id = $_GET['album_id'];
-    $albums = \Classes\bd\AlbumBD::getById($id);
-    echo "<img src='fixtures/images/" . $albums->getUrlImage() . "' alt='Image de l'album' />";
-    echo "<h2>Artiste : " . $albums->getArtiste() . "</h2>";
-    echo "<h2>" . $albums->getTitre() . "</h2>";
-    echo "<h2>Genre : " . $albums->getGenre() . "</h2>";
-    echo "<h2>Date de sortie : " . $albums->getAnnee() . "</h2>";
-    ?>
+    $album = \Classes\bd\AlbumBD::getById($id);
+    $notes = \Classes\bd\NoteAlbumBD::getNotesByAlbumId($id);
+    $noteMoyenne = 0;
+    if (is_array($notes)) {
+      if(count($notes) ===0){
+        $noteMoyenne = "Aucune notation pour cette album";
+      }else{
+        foreach($notes as $note){
+          $noteMoyenne += $note->getNote();
+        }
+        $noteMoyenne = "la note moyenne est de : " . $noteMoyenne / count($notes) . "/10";
+      }
+  }else{
+    $noteMoyenne ="la note moyenne est de : " . $notes->getNote() . "/10";
+  }
+
+    echo "<img src='fixtures/images/" . $album->getUrlImage() . "' alt='Image de l'album' />";
+    echo "<h2>Artiste : " . $album->getArtiste() . "</h2>";
+    echo "<h2>" . $album->getTitre() . "</h2>";
+    echo "<h2>Genre : " . $album->getGenre() . "</h2>";
+    echo "<h2>Date de sortie : " . $album->getAnnee() . "</h2>";
+    echo "<h2>" . $noteMoyenne . "</h2>"; ?>
+<form action="" method="POST">
+    <input type="text" name="notation" placeholder="Noter un album...">
+    <button type="submit">Ajouter</button>
+</form>
+<?php
+    if(isset($_POST['notation']) && $_POST['notation'] !== '') {
+        $notation = $_POST['notation'];
+        \Classes\bd\NoteAlbumBD::ajouterNote($notation, intval($id));
+        header("Location: album.php?album_id=".$id);
+    }
+?>
+
 </main>
 
 <!-- Inclure Bootstrap JS (jQuery et Popper.js doivent être inclus avant) -->
