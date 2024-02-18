@@ -46,10 +46,12 @@
     echo "<h2>Date de sortie : " . $albums->getAnnee() . "</h2>";
     if ($admin) {
         echo "<a href='adminAlbum.php?type=modif&album_id=" . $albums->getId() . "'>Modifier</a>";
+        echo "<a onclick=\"showPopupDelAlb('" . $albums->getTitre() . "')\"><p class='test-arrow'>Supprimer</p></a>";
     }
     ?>
 </main>
 
+<script type="text/javascript" src = "static/popup.js"></script>
 <!-- Inclure Bootstrap JS (jQuery et Popper.js doivent être inclus avant) -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

@@ -104,8 +104,7 @@
                                 class="test-arrow"><?php echo $album->getArtiste(); ?></p></a>
                     <?php
                     if ($admin) {
-                        echo "<a href='adminAlbum.php?type=modif&album_id=" . $album->getId() . "'><p class='test-arrow'>Modifier</p></a>";
-                        echo "<a onclick=\"showPopupDel('" . $album->getTitre() . "')\"><p class='test-arrow'>Supprimer</p></a>";
+                        echo "<a onclick=\"showPopupDelAlb('" . $album->getTitre() . "')\"><p class='test-arrow'>Supprimer</p></a>";
                     }
                     ?>
                 </div>
@@ -114,27 +113,7 @@
     </div>
 </main>
 
-
-<script type="text/javascript">
-    function showPopupDel(album) {
-        const r = confirm("Voulez-vous vraiment supprimer l'album " + album + " ?");
-        if (r === true) {
-            $.ajax({
-                url: 'delete_album.php',
-                type: 'POST',
-                data: {albumTitle: album},
-                success: function (data) {
-                    alert(data);
-                    location.reload(); // Reload the page to see the changes
-                },
-                error: function () {
-                    alert('An error occurred while deleting the album.');
-                }
-            });
-
-        }
-    }
-</script>
+<script type="text/javascript" src = "static/popup.js"></script>
 <!-- Inclure Bootstrap JS (jQuery et Popper.js doivent être inclus avant) -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

@@ -58,11 +58,13 @@
     echo "<h2>Artiste : " . $artiste->getNom() . "</h2>";
     echo "<h3>" . $artiste->getBio() . "</h3>";
     if ($admin) {
-        echo "<a href='modifierArtiste.php?artiste_id=" . $artiste->getId() . "'>Modifier</a>";
+        echo "<a href='adminArtist.php?type=modif&artiste_id=" . $artiste->getId() . "'>Modifier</a>";
+        echo "<a onclick=\"showPopupDelArt('" . $artiste->getNom() . "')\"><p class='test-arrow'>Supprimer</p></a>";
     }
     ?>
 </main>
 
+<script type="text/javascript" src = "static/popup.js"></script>
 <!-- Inclure Bootstrap JS (jQuery et Popper.js doivent être inclus avant) -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
