@@ -1,0 +1,31 @@
+.button{
+    appearance: none;
+    background-color: #2a2b38;
+    color: #40BAFF;
+    margin-top: 5vh;
+    margin-left: 3vw;
+    height: 6vh;
+    width: 7vw;
+    text-align: center;
+    font-size: 2vh;
+    box-sizing: border-box;
+    border-radius: 0.9375em;
+    border: none;
+}
+
+.button:disabled {
+    pointer-events: none;
+}
+
+.button:hover {
+  color: #40BAFF;
+  background-color: #041E2C;
+  box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
+  transform: translateY(-2px);
+  
+}
+
+.button:active {
+  box-shadow: none;
+  transform: translateY(0);
+}
