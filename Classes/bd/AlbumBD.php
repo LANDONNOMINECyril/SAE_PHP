@@ -37,7 +37,7 @@ class AlbumBD
     
 
     
-public static function getAlbumsbyQuery($search_query): array {
+public static function getAlbumsbyQuery($search_query): array | Album {
     try {
         $pdo = new PDO('sqlite:bdd.sqlite3');
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

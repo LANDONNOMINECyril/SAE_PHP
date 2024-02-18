@@ -71,7 +71,7 @@ if (!file_exists($dbFilename)) {
     }
 ?>
 <!--  -->
-<div class="liste-artiste">
+<div class="liste-album">
     <?php 
     foreach ($result as $album) :
     $debut = "fixtures/images/";
@@ -89,7 +89,7 @@ if (!file_exists($dbFilename)) {
 
                     //print_r($album) // TESTTTT
       //print_r($album->getArtiste()) ?>
-        <div class="artiste">
+        <div class="album">
             <img src="<?php echo $url; ?>" alt="artiste1" />
 
             <div class="contenu">

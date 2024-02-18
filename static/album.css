@@ -1,5 +1,5 @@
 
-.liste-artiste{
+.liste-album{
     margin: 0% 10%;
     display: flex;
     justify-content: space-between;
@@ -10,7 +10,7 @@
     text-align: center;
 }
 
-.artiste{
+.album{
     width: 25%;
     height: 20rem;
     position : relative;
@@ -19,7 +19,7 @@
     border-radius: 10px;    
 }
 
-.artiste::before {
+.album::before {
     content: "";
     position: absolute;
     width: 100%;
@@ -30,7 +30,7 @@
     border-radius: 10px;
   } 
 
-.artiste img{
+.album img{
     width: 100%;
     height: 100%;
     z-index: -1;

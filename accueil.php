@@ -22,7 +22,7 @@
     <nav>
         <ul>
             <li><a href="accueil.php">Explorer la liste d'album</a></li>
-            <li><a href="#">Mes favoris</a></li>
+            <li><a href="MesFavoris.php">Mes favoris</a></li>
             <li><a href="#">Mon historique</a></li>
             <li><a href="monCompte.php">Mon Compte</a></li>
             <li id="bot1"><a href="#">Déconnexion</a></li>
@@ -83,19 +83,19 @@
     $artistes = \Classes\bd\ArtisteBD::getAllArtistes();
     //foreach ($artistes as $artiste) {
         //print_r($artiste->getNom());
-    }
     ?>
 
 
-    <div class="liste-artiste">
+    <div class="liste-album">
         <?php foreach ($albums as $album) :
             $debut = "fixtures/images/";
             $url = "";
             if ($album->getUrlImage() != "" && $album->getUrlImage() != "img.jpg") {
                 $url = $debut . $album->getUrlImage();
+                $url = str_replace("%","%25",$url);
             }
 
-            if ($album->getUrlImage() === "") {
+            if ($album->getUrlImage() === "" || $album->getUrlImage() === null) {
                 $album->setUrlImage("default.jpg");
                 $url = $debut . $album->getUrlImage();
             }
@@ -103,7 +103,7 @@
             //print_r($album) // TESTTTT
             //print_r($album->getArtiste())
             ?>
-            <div class="artiste">
+            <div class="album">
                 <img src="<?php echo $url; ?>" alt="artiste1"/>
 
                 <div class="contenu">
@@ -117,11 +117,11 @@
                         echo "<a onclick=\"showPopupDelAlb('" . $album->getTitre() . "')\"><p class='test-arrow'>Supprimer</p></a>";
                     }
                     ?>
-                </div>
                 <form action="ajouter_a_playlist.php" method="post" style="display: inline;">
                     <input type="hidden" name="album_id" value="<?php echo $album->getId(); ?>">
                     <button type="submit" class="heart-button">&#10084;</button>
                 </form>
+                </div>
             </div>
         <?php endforeach; ?>
     </div>

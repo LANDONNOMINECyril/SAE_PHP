@@ -35,6 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit;
 
         } else {
+            $_SESSION['id'] = $res['user_id'];
             header("Location: accueil.php");
             exit;
         }

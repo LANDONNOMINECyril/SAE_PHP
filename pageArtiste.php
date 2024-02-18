@@ -69,7 +69,7 @@
     ?>
     <?php
     if(!is_array($albums)){ ?>
-                <div class="artiste">
+                <div class="album">
                 <img src="<?php echo $url; ?>" alt="artiste1"/>
 
                 <div class="contenu">
@@ -105,7 +105,7 @@
             //print_r($album) // TESTTTT
             //print_r($album->getArtiste())
             ?>
-            <div class="artiste">
+            <div class="album">
                 <img src="<?php echo $url; ?>" alt="artiste1"/>
 
                 <div class="contenu">

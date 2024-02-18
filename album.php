@@ -76,7 +76,6 @@
         echo "<a href='modifierAlbum.php?album_id=" . $album->getId() . "'>Modifier</a>";
 }
 ?>
-?>
 
 
 </main>
